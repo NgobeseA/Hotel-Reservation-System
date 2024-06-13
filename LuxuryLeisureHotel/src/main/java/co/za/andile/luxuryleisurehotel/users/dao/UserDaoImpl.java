@@ -29,7 +29,7 @@ public class UserDaoImpl extends DBConnection implements UserDao{
     public boolean addUser(User user){
         int i =0;
         if(connection != null){
-            String sql = "INSERT INTO users (name, surname, email, cell_number, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getSurname());
@@ -54,7 +54,7 @@ public class UserDaoImpl extends DBConnection implements UserDao{
     public User getUser(String email, String password) {
         User user = new User();
         if(connection != null){
-            String sql = "SELECT id, name, surname, email, cell_number, address, password, admin, registration_token, verified FROM users WHERE email = ? AND password =?";
+            String sql = "SELECT id, name, surname, email, contact, address, password, admin, registration_token, verified FROM users WHERE email = ? AND password =?";
             try(PreparedStatement ps = connection.prepareStatement(sql)){
                 ps.setString(1, email);
                 ps.setString(2, password);
@@ -98,6 +98,35 @@ public class UserDaoImpl extends DBConnection implements UserDao{
         }
         
         
+    }
+
+    @Override
+    public boolean verifyToken(String token) {
+       int i =0; 
+       
+       if(connection != null){
+            try{
+                String sql = "SELECT id FROM users WHERE verification_token=?";
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ps.setString(1, token);
+
+                ResultSet resultSet = ps.executeQuery();
+
+                if(resultSet.next()){
+                    int userId = resultSet.getInt("id");
+
+                    sql = "UPDATE users SET verified = TRUE WHERE id =?";
+                    ps = connection.prepareStatement(sql);
+                    ps.setInt(1, userId);
+
+                    i = ps.executeUpdate();
+
+                }
+            } catch (SQLException ex) {
+             Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+       return i >0;
     }
     
     
