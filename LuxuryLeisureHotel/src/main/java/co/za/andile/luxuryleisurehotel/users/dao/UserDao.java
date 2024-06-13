@@ -5,6 +5,7 @@
  */
 package co.za.andile.luxuryleisurehotel.users.dao;
 
+import co.za.andile.luxuryleisurehotel.exceptions.DuplicateUserException;
 import co.za.andile.luxuryleisurehotel.users.model.User;
 /**
  *
@@ -12,4 +13,7 @@ import co.za.andile.luxuryleisurehotel.users.model.User;
  */
 public interface UserDao {
     boolean addUser(User user);
+    User getUser(String email, String password);
+    void duplicateUser(String email) throws DuplicateUserException;
+    boolean verifyToken(String token);
 }

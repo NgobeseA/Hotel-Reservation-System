@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.za.andile.hotelreservation.users.dao;
+package co.za.andile.luxuryleisurehotel.users.dao;
 
-import co.za.andile.hotelreservation.DBConnection;
-import co.za.andile.hotelreservation.users.model.User;
+import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+import co.za.andile.luxuryleisurehotel.exceptions.DuplicateUserException;
+import co.za.andile.luxuryleisurehotel.users.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,7 @@ public class UserDaoImpl extends DBConnection implements UserDao{
         super();
     }
    
-    
+    @Override
     public boolean addUser(User user){
         int i =0;
         if(connection != null){
@@ -33,7 +34,7 @@ public class UserDaoImpl extends DBConnection implements UserDao{
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getSurname());
                 preparedStatement.setString(3, user.getEmail());
-                preparedStatement.setString(4, user.getContactNumber());
+                preparedStatement.setString(4, user.getContact());
                 preparedStatement.setString(5, user.getAddress());
                 preparedStatement.setString(6, user.getPassword());
                 preparedStatement.setBoolean(7, user.isAdmin());
@@ -80,7 +81,7 @@ public class UserDaoImpl extends DBConnection implements UserDao{
     }
 
     @Override
-    public boolean duplicateUser(String email) {
+    public void duplicateUser(String email) throws DuplicateUserException {
         if(connection != null){
             String sql = "SELECT id FROM users WHERE email =?";
             try(PreparedStatement ps = connection.prepareStatement(sql)){
@@ -89,14 +90,14 @@ public class UserDaoImpl extends DBConnection implements UserDao{
                 ResultSet resultSet = ps.executeQuery();
                 
                 if(resultSet.next()){
-                    return true;
+                    throw new DuplicateUserException();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
-        return false;
+        
     }
     
     
