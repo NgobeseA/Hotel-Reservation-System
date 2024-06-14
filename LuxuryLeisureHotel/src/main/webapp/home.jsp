@@ -9,9 +9,19 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Luxury Leisure Hotel</title>
     </head>
     <body>
-        <h1>Wala you made thus far</h1>
+        <h1>Live soft life ntanga!</h1>
+        
+        <hr>
+        <h3>Book now Ntanga!</h3>
+        <form action="/BookingController" method="post">
+            Check-in: <input name="checkIn" type="date">
+            Check-in Time: <input name="time-in" type="time"><br>
+            Check-Out: <input name="checkOut" type="date">
+            Check-Out Time: <input name="time-out" type="time"> <br>
+            <input name="submit" type="submit" value="booking">
+        </form>
     </body>
 </html>
