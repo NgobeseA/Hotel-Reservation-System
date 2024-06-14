@@ -12,6 +12,7 @@ import co.za.andile.luxuryleisurehotel.exceptions.InvalidDataException;
 import co.za.andile.luxuryleisurehotel.users.dao.UserDao;
 import co.za.andile.luxuryleisurehotel.users.emailservice.EmailService;
 import co.za.andile.luxuryleisurehotel.users.emailservice.EmailServiceImpl;
+import co.za.andile.luxuryleisurehotel.users.encryption.UserEncryptionService;
 import co.za.andile.luxuryleisurehotel.users.model.User;
 import java.sql.Connection;
 import java.util.Properties;
@@ -30,11 +31,13 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserServiceImpl implements UserService{
     private final UserDao userDao;
     private final EmailService emailService;
+    private final UserEncryptionService userEncryptService;
     
     
-    public UserServiceImpl(UserDao userDao, EmailService emailService){
+    public UserServiceImpl(UserDao userDao, EmailService emailService, UserEncryptionService userEncryptService){
         this.userDao = userDao;
         this.emailService= emailService;
+        this.userEncryptService = userEncryptService;
     }
     
     @Override
@@ -54,7 +57,7 @@ public class UserServiceImpl implements UserService{
             user.setEmailToken(token);
             user.setAdmin(admin);
             user.setVerified(verified);
-            user.setPassword(hashingPassword(password));
+            user.setPassword(userEncryptService.hashingPassword(password));
            
             //if(emailService.sendVerificationEmail(name, surname, email, token)){
                 result= userDao.addUser(user);
@@ -71,17 +74,22 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User login(String email, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        User user = new User();
+        try {
+            
+            
+            userDao.duplicateUser(email.trim());
+            
+            return userDao.getUser(email.trim(), password.trim());
+        } catch (DuplicateUserException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
     }
 
     @Override
     public String tokenVerification(String token) {
         return userDao.verifyToken(token) ? "token verified" : "Failed to to verify token";
-    }
-
-    @Override
-    public String hashingPassword(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
  
 }

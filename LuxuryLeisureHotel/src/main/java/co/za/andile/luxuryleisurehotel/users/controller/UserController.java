@@ -8,6 +8,8 @@ package co.za.andile.luxuryleisurehotel.users.controller;
 import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
 import co.za.andile.luxuryleisurehotel.users.dao.UserDaoImpl;
 import co.za.andile.luxuryleisurehotel.users.emailservice.EmailServiceImpl;
+import co.za.andile.luxuryleisurehotel.users.encryption.UserEncryptServiceImpl;
+import co.za.andile.luxuryleisurehotel.users.model.User;
 import co.za.andile.luxuryleisurehotel.users.service.UserService;
 import co.za.andile.luxuryleisurehotel.users.service.UserServiceImpl;
 import java.io.IOException;
@@ -17,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
-    private UserService userService = new UserServiceImpl(new UserDaoImpl(new Connect().connectToDB()), new EmailServiceImpl());
+    private UserService userService = new UserServiceImpl(new UserDaoImpl(new Connect().connectToDB()), new EmailServiceImpl(), new UserEncryptServiceImpl());
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,6 +74,18 @@ public class UserController extends HttpServlet {
                     request.getRequestDispatcher("register.jsp").forward(request, response);
                 }
                 break;
+            case "login":
+                User user = userService.login(
+                        request.getParameter("email"), 
+                        request.getParameter("password"));
+                if(user != null){
+                    HttpSession session = request.getSession(true);
+                    session.setAttribute("user", user);
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("message", "Incorrect details");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }
         }
     }
 

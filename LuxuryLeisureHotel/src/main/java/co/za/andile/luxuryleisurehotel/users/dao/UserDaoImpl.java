@@ -6,6 +6,7 @@
 package co.za.andile.luxuryleisurehotel.users.dao;
 
 import co.za.andile.luxuryleisurehotel.exceptions.DuplicateUserException;
+import co.za.andile.luxuryleisurehotel.users.encryption.UserEncryptServiceImpl;
 import co.za.andile.luxuryleisurehotel.users.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,24 +55,24 @@ public class UserDaoImpl implements UserDao{
     public User getUser(String email, String password) {
         User user = new User();
         if(connection != null){
-            String sql = "SELECT id, name, surname, email, contact, address, password, admin, registration_token, verified FROM users WHERE email = ? AND password =?";
+            String sql = "SELECT id, name, surname, email, contact, address, password, admin, registration_token, verified FROM users WHERE email = ?";
             try(PreparedStatement ps = connection.prepareStatement(sql)){
                 ps.setString(1, email);
-                ps.setString(2, password);
-                
                 ResultSet resultSet = ps.executeQuery();
-                
                 if(resultSet.next()){
-                    user.setId(resultSet.getInt("id"));
-                    user.setName(resultSet.getString("name"));
-                    user.setSurname(resultSet.getString("surname"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setAddress(resultSet.getString("address"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setAdmin(resultSet.getBoolean("admin"));
-                    user.setEmailToken(resultSet.getString("registration_token"));
-                    user.setVerified(resultSet.getBoolean("verified"));
+                   if(new UserEncryptServiceImpl().passwordVerification(password, resultSet.getString("password"))){ // verifying password
+                        user.setId(resultSet.getInt("id"));
+                        user.setName(resultSet.getString("name"));
+                        user.setSurname(resultSet.getString("surname"));
+                        user.setEmail(resultSet.getString("email"));
+                        user.setAddress(resultSet.getString("address"));
+                        user.setPassword(resultSet.getString("password"));
+                        user.setAdmin(resultSet.getBoolean("admin"));
+                        user.setEmailToken(resultSet.getString("registration_token"));
+                        user.setVerified(resultSet.getBoolean("verified"));
+                   }
                 }
+                
             } catch (SQLException ex) {
                 Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
