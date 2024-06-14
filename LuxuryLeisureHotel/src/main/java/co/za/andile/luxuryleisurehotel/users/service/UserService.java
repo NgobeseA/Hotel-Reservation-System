@@ -12,10 +12,8 @@ import co.za.andile.luxuryleisurehotel.users.model.User;
  * @author T440
  */
 public interface UserService {
-    String createUser(String name, String surname, String email, String contact, String address, String password, boolean admin, boolean verified);
+    boolean createUser(String name, String surname, String email, String contact, String address, String password, boolean admin, boolean verified);
     User login(String email, String password);
-    String generateEmailToken(String email);
-    boolean sendVerificationEmail(String name, String surname, String email, String token);
     String tokenVerification(String token);
     String hashingPassword(String password);
 }

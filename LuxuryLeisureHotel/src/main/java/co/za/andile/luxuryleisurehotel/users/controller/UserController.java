@@ -5,7 +5,9 @@
  */
 package co.za.andile.luxuryleisurehotel.users.controller;
 
+import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
 import co.za.andile.luxuryleisurehotel.users.dao.UserDaoImpl;
+import co.za.andile.luxuryleisurehotel.users.emailservice.EmailServiceImpl;
 import co.za.andile.luxuryleisurehotel.users.service.UserService;
 import co.za.andile.luxuryleisurehotel.users.service.UserServiceImpl;
 import java.io.IOException;
@@ -22,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
-    private UserService userService = new UserServiceImpl(new UserDaoImpl());
+    private UserService userService = new UserServiceImpl(new UserDaoImpl(new Connect().connectToDB()), new EmailServiceImpl());
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,20 +39,11 @@ public class UserController extends HttpServlet {
         
         switch(request.getParameter("submit")){
             case "getSignUpPage":
-                String message = userService.createUser(
-                        request.getParameter("name"),
-                        request.getParameter("surname"),
-                        request.getParameter("email"),
-                        request.getParameter("contact"),
-                        request.getParameter("address"),
-                        request.getParameter("password"), false, false);
-                if(message.startsWith("Successfully")){
-                    //request.setAttribute("message", message);
-                    request.getRequestDispatcher("home.jsp").forward(request, response);
-                }else{
-                    request.setAttribute("message", message);
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
-                }
+               request.getRequestDispatcher("register.jsp").forward(request, response);
+               break;
+            case "getLoginPage":
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                break;
         }
     }
 
@@ -59,6 +52,26 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        switch(request.getParameter("submit")){
+            case "register":
+                 boolean result = userService.createUser(
+                        request.getParameter("name"),
+                        request.getParameter("surname"),
+                        request.getParameter("email"),
+                        request.getParameter("contact"),
+                        request.getParameter("address"),
+                        request.getParameter("password"), false, false);
+                 
+                if(result){
+                    //request.setAttribute("message", message);
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("message", "failed to register");
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                }
+                break;
+        }
     }
 
     /**

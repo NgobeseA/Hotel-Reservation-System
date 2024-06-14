@@ -5,9 +5,9 @@
  */
 package co.za.andile.luxuryleisurehotel.users.dao;
 
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.exceptions.DuplicateUserException;
 import co.za.andile.luxuryleisurehotel.users.model.User;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,18 +18,18 @@ import java.util.logging.Logger;
  *
  * @author Train 01
  */
-public class UserDaoImpl extends DBConnection implements UserDao{
+public class UserDaoImpl implements UserDao{
+    private Connection connection;
     
-    
-    public UserDaoImpl(){
-        super();
+    public UserDaoImpl(Connection connection){
+        this.connection = connection;
     }
    
     @Override
     public boolean addUser(User user){
         int i =0;
         if(connection != null){
-            String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (name, surname, email, cell_number, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getSurname());
