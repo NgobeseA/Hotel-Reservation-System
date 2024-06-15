@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao{
     public boolean addUser(User user){
         int i =0;
         if(connection != null){
-            String sql = "INSERT INTO users (name, surname, email, cell_number, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getSurname());
@@ -70,6 +70,7 @@ public class UserDaoImpl implements UserDao{
                         user.setAdmin(resultSet.getBoolean("admin"));
                         user.setEmailToken(resultSet.getString("registration_token"));
                         user.setVerified(resultSet.getBoolean("verified"));
+                        user.setContact(resultSet.getString("contact"));
                    }
                 }
                 

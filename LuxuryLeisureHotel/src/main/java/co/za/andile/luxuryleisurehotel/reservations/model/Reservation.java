@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.za.andile.luxuryleisurehotel.bookings.model;
+package co.za.andile.luxuryleisurehotel.reservations.model;
 
 import co.za.andile.luxuryleisurehotel.room.model.Room;
 import co.za.andile.luxuryleisurehotel.users.model.User;
@@ -19,21 +19,21 @@ import lombok.Setter;
  */
 
 @AllArgsConstructor@Getter@Setter@NoArgsConstructor
-public class Booking {
+public class Reservation {
     private int bookingId;
     private User user_id;
     private Room room_id;
     private LocalDateTime created_on;
     private LocalDateTime check_in;
     private LocalDateTime check_out;
-    private String dinning_pref;
+    private Status status;
     
-    public Booking(User user_id, Room room_id, LocalDateTime created_on, LocalDateTime check_in, LocalDateTime check_out, String dinning_pref) {
+    public Reservation(User user_id, Room room_id, LocalDateTime created_on, LocalDateTime check_in, LocalDateTime check_out, Status status) {
         this.user_id = user_id;
         this.room_id = room_id;
         this.created_on = created_on;
         this.check_in = check_in;
         this.check_out = check_out;
-        this.dinning_pref = dinning_pref;
+        this.status = status;
     }
 }

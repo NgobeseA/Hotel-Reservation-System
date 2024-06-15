@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService{
             user.setVerified(verified);
             user.setPassword(userEncryptService.hashingPassword(password));
            
-            //if(emailService.sendVerificationEmail(name, surname, email, token)){
+            if(emailService.sendVerificationEmail(name, surname, email, token)){
                 result= userDao.addUser(user);
-            //}
+            }
             
         } catch (InvalidDataException ex) {
             

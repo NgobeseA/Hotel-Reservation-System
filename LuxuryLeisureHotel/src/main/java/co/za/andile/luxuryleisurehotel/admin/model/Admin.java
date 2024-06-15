@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.za.andile.luxuryleisurehotel.users.model;
+package co.za.andile.luxuryleisurehotel.admin.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +14,8 @@ import lombok.Setter;
  *
  * @author T440
  */
-@AllArgsConstructor@NoArgsConstructor@Getter@Setter
-public class User {
+@Setter@AllArgsConstructor@NoArgsConstructor@Getter
+public class Admin {
     private int id;
     private String name;
     private String surname;
@@ -26,8 +26,8 @@ public class User {
     private boolean verified;
     private String emailToken;
     private String password;
-
-    public User(String name, String surname, String email, String contact, String address, boolean admin, boolean verified, String emailToken, String password) {
+    
+    public Admin(String name, String surname, String email, String contact, String address, boolean admin, boolean verified, String emailToken, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -38,5 +38,4 @@ public class User {
         this.emailToken = emailToken;
         this.password = password;
     }
-    
 }

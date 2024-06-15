@@ -17,8 +17,15 @@ import lombok.Setter;
 @AllArgsConstructor @Getter@Setter@NoArgsConstructor
 public class Room {
     private int id;
-    private String roomType;
+    private RoomType roomType;
     private double rates;
     private int occupancy;
-    private boolean avaliable;
+    private boolean available;
+
+    public Room(RoomType roomType, double rates, int occupancy, boolean available) {
+        this.roomType = roomType;
+        this.rates = rates;
+        this.occupancy = occupancy;
+        this.available = available;
+    }
 }

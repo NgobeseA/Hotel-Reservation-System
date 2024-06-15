@@ -6,6 +6,7 @@
 package co.za.andile.luxuryleisurehotel.users.controller;
 
 import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
+import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.users.dao.UserDaoImpl;
 import co.za.andile.luxuryleisurehotel.users.emailservice.EmailServiceImpl;
 import co.za.andile.luxuryleisurehotel.users.encryption.UserEncryptServiceImpl;
@@ -27,7 +28,11 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
-    private UserService userService = new UserServiceImpl(new UserDaoImpl(new Connect().connectToDB()), new EmailServiceImpl(), new UserEncryptServiceImpl());
+    private UserService userService = new UserServiceImpl(
+            new UserDaoImpl(new DBConnection().connect()),
+            new EmailServiceImpl(),
+            new UserEncryptServiceImpl()
+    );
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
