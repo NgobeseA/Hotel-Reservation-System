@@ -10,5 +10,5 @@ package co.za.andile.luxuryleisurehotel.reservations.model;
  * @author T440
  */
 public enum Status {
-    CONFIRMED,CHECKED_IN, CHECKED_OUT, CANCELLED
+    PENDING,CONFIRMED,CHECKED_IN, CHECKED_OUT, CANCELLED
 }

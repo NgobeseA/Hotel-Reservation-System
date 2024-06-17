@@ -18,20 +18,19 @@ import lombok.Setter;
  * @author Train 01
  */
 
-@AllArgsConstructor@Getter@Setter@NoArgsConstructor
+@AllArgsConstructor@NoArgsConstructor@Setter@Getter
 public class Reservation {
     private int bookingId;
-    private User user_id;
-    private Room room_id;
+    private User user;
+    private Room room;
     private LocalDateTime created_on;
     private LocalDateTime check_in;
     private LocalDateTime check_out;
     private Status status;
     
-    public Reservation(User user_id, Room room_id, LocalDateTime created_on, LocalDateTime check_in, LocalDateTime check_out, Status status) {
-        this.user_id = user_id;
-        this.room_id = room_id;
-        this.created_on = created_on;
+    public Reservation(User user, Room room, LocalDateTime check_in, LocalDateTime check_out, Status status) {
+        this.user = user;
+        this.room = room;
         this.check_in = check_in;
         this.check_out = check_out;
         this.status = status;
