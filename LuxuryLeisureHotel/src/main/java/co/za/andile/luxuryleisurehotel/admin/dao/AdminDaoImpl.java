@@ -6,6 +6,7 @@
 package co.za.andile.luxuryleisurehotel.admin.dao;
 
 import co.za.andile.luxuryleisurehotel.admin.model.Admin;
+import co.za.andile.luxuryleisurehotel.room.model.Room;
 import co.za.andile.luxuryleisurehotel.users.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,8 +57,48 @@ public class AdminDaoImpl implements AdminDao{
     }
 
     @Override
-    public boolean addUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean addUser(User user, String token, String password) {
+        if(connection != null){
+            String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setString(1, user.getName());
+                preparedStatement.setString(2, user.getSurname());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.setString(4, user.getContact());
+                preparedStatement.setString(5, user.getAddress());
+                preparedStatement.setString(6, password);
+                preparedStatement.setBoolean(7, user.isAdmin());
+                preparedStatement.setString(8, token);
+                preparedStatement.setBoolean(9, user.isVerified());
+                
+                if(preparedStatement.executeUpdate() > 0) return true;
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addRoom(Room room) {
+        if(connection != null){
+            String sql ="INSERT INTO rooms (room_type, price_per_night, available, rating, picture, description) VALUES (?, ?, ?, ?,?,?)";
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setString(1, room.getRoomType().name());
+                preparedStatement.setDouble(2, room.getRates());
+                preparedStatement.setBoolean(3, room.isAvailable());
+                preparedStatement.setInt(4, room.getRating());
+                preparedStatement.setString(5, room.getPicture());
+                preparedStatement.setString(5, room.getDescription());
+                
+                if(preparedStatement.executeUpdate() > 0) return true;
+            }
+          catch (SQLException ex) {
+                Logger.getLogger(AdminDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return false;
     }
     
 }
