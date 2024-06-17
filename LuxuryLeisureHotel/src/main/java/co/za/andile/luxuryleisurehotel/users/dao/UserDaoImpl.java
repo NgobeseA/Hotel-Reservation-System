@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao{
     }
    
     @Override
-    public boolean addUser(User user){
+    public boolean addUser(User user, String token, String password){
         int i =0;
         if(connection != null){
             String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -37,9 +37,9 @@ public class UserDaoImpl implements UserDao{
                 preparedStatement.setString(3, user.getEmail());
                 preparedStatement.setString(4, user.getContact());
                 preparedStatement.setString(5, user.getAddress());
-                preparedStatement.setString(6, user.getPassword());
+                preparedStatement.setString(6, password);
                 preparedStatement.setBoolean(7, user.isAdmin());
-                preparedStatement.setString(8, user.getEmailToken());
+                preparedStatement.setString(8, token);
                 preparedStatement.setBoolean(9, user.isVerified());
                 
                 i = preparedStatement.executeUpdate();
@@ -66,9 +66,9 @@ public class UserDaoImpl implements UserDao{
                         user.setSurname(resultSet.getString("surname"));
                         user.setEmail(resultSet.getString("email"));
                         user.setAddress(resultSet.getString("address"));
-                        user.setPassword(resultSet.getString("password"));
+                        System.out.println(resultSet.getBoolean("admin") +" from DAO");
                         user.setAdmin(resultSet.getBoolean("admin"));
-                        user.setEmailToken(resultSet.getString("registration_token"));
+                        //user.setEmailToken(resultSet.getString("registration_token"));
                         user.setVerified(resultSet.getBoolean("verified"));
                         user.setContact(resultSet.getString("contact"));
                    }
@@ -130,6 +130,4 @@ public class UserDaoImpl implements UserDao{
         }
        return i >0;
     }
-    
-    
 }

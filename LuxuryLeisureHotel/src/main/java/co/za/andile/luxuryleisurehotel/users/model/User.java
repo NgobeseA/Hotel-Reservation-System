@@ -24,10 +24,10 @@ public class User {
     private String address;
     private boolean admin;
     private boolean verified;
-    private String emailToken;
-    private String password;
+    //private String emailToken;
+    //private String password;
 
-    public User(String name, String surname, String email, String contact, String address, boolean admin, boolean verified, String emailToken, String password) {
+    public User(String name, String surname, String email, String contact, String address, boolean admin, boolean verified) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -35,8 +35,7 @@ public class User {
         this.address = address;
         this.admin = admin;
         this.verified = verified;
-        this.emailToken = emailToken;
-        this.password = password;
-    }
-    
+        //this.emailToken = emailToken;
+        //this.password = password;
+    } 
 }

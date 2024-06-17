@@ -5,7 +5,9 @@
  */
 package co.za.andile.luxuryleisurehotel.users.service;
 
+import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.users.model.User;
+import java.util.List;
 
 /**
  *
@@ -15,4 +17,5 @@ public interface UserService {
     boolean createUser(String name, String surname, String email, String contact, String address, String password, boolean admin, boolean verified);
     User login(String email, String password);
     String tokenVerification(String token);
+    List<Reservation> getUserReservation(int userId);
 }

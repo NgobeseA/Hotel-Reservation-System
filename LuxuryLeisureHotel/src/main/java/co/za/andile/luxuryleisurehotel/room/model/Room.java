@@ -19,13 +19,21 @@ public class Room {
     private int id;
     private RoomType roomType;
     private double rates;
-    private int occupancy;
     private boolean available;
+    private String picture;
+    private String description;
+    private int rating;
+    private String location;
 
-    public Room(RoomType roomType, double rates, int occupancy, boolean available) {
+    public Room(RoomType roomType, double rates, boolean available, String picture, String description, int rating, String location) {
         this.roomType = roomType;
         this.rates = rates;
-        this.occupancy = occupancy;
         this.available = available;
+        this.picture = picture;
+        this.description = description;
+        this.rating = rating;
+        this.location = location;
     }
+
+    
 }

@@ -27,7 +27,7 @@ public class RoomServiceImpl implements RoomService{
 
     @Override
     public boolean createRoom(Room room) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return roomDao.addRoom(room);
     }
 
     @Override
