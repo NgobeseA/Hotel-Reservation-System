@@ -17,4 +17,5 @@ public interface RoomService {
     boolean createRoom(Room room);
     List<Room> getALLRooms();
     boolean editRoom(int id);
+    List<Room> getRoomTypes();
 }

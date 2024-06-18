@@ -5,94 +5,66 @@
  */
 package co.za.andile.luxuryleisurehotel.email;
 
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Properties;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
+import co.za.andile.luxuryleisurehotel.users.model.User;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.simplejavamail.api.email.Email;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.api.mailer.Mailer;
+import org.simplejavamail.mailer.MailerBuilder;
+import org.simplejavamail.api.mailer.config.TransportStrategy;
 
-/**
- *
- * @author T440
- */
+
 @WebServlet(name = "EmailController", urlPatterns = {"/EmailController"})
+
 public class EmailController extends HttpServlet {
 
-   
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-   
     @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+        // Get form parameters
         String to = request.getParameter("to");
         String subject = request.getParameter("subject");
-        String messageText = request.getParameter("message");
-
-        final String user = "andilekngobese@gmail.com"; // change accordingly
-        final String password = "isniridlrhrwfcxs";  // change accordingly
-
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-props.put("mail.smtp.port", "465"); // Use 465 for SSL
-props.put("mail.smtp.auth", "true");
-props.put("mail.smtp.starttls.enable", "false"); // Enable TLS
-props.put("mail.smtp.ssl.enable", "true"); // Enable SSL
-props.put("mail.smtp.ssl.protocols", "TLSv1.2");
-props.put("mail.smtp.ssl.trust", "*");
-
-        Session session = Session.getInstance(props, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(user, password);
-            }
-        });
-
-        // Enable debug mode for detailed logs (optional)
-        session.setDebug(true);
+        String message = request.getParameter("message");
 
         try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(user));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject(subject);
-            message.setText(messageText);
+            // Build the email
+            Email email = EmailBuilder.startingBlank()
+                    .from("Luxury Leisure Hotel (LLH)", "andilek.ngobese@outlook.com")
+                    .to(to)
+                    .withSubject(subject)
+                    .withPlainText(message)
+                    .buildEmail();
 
-            Transport.send(message);
-            response.getWriter().println("Email sent successfully!");
+            // Configure the mailer
+            Mailer mailer = MailerBuilder
+                    .withSMTPServer("smtp.office365.com", 587, "andilek.ngobese@outlook.com", "@AKphyco99")
+                    .withTransportStrategy(TransportStrategy.SMTP_TLS)
+                    .buildMailer();
 
-        } catch (MessagingException e) {
+            // Send the email
+            mailer.sendMail(email);
+            System.out.println("Email sent successfully to " + to);
+
+            // Provide feedback to the user
+            response.setContentType("text/html;charset=UTF-8");
+            response.getWriter().println("Email sent successfully to " + to);
+
+        } catch (Exception e) {
             e.printStackTrace();
+            response.setContentType("text/html;charset=UTF-8");
             response.getWriter().println("Failed to send email: " + e.getMessage());
         }
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
-    
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

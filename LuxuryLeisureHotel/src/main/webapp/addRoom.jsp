@@ -14,12 +14,15 @@
         <title>Add Room</title>
     </head>
     <body>
+        <jsp:include page="navbar.jsp" />
         <% 
             User user = (User) request.getSession(false).getAttribute("user");
             RoomType[] roomtype = (RoomType[]) request.getAttribute("enum");
-            if(user.isAdmin()){
+            if(!user.isAdmin()){
             %>
-        <h1>add Room</h1>
+            <jsp:include page="unauthorized.jsp" />
+            <%} else {%>
+            <h1>add Room</h1>
         <form action="RoomController" method="post">
             Room type: <select id="roomType" name="roomType">
                 <option>select</option>
@@ -34,11 +37,10 @@
             Rates: <input name="rates" type="number"><br>
             Rating: <input name="rating" type="number"><br>
             Available: <input name="available" type="checkbox"><br>
+            Room Number: <input name="room_number" type="text"></br>
             <input name="submit" type="submit" value="createRoom">
             
         </form>
-            <%} else {%>
-            <h3>Not Authorized</h3>
             <%}%>
     </body>
 </html>

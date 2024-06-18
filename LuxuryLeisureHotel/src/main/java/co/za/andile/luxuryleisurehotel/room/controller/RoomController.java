@@ -70,7 +70,8 @@ public class RoomController extends HttpServlet {
                         request.getParameter("picture"),
                         request.getParameter("description"),
                         Integer.parseInt(request.getParameter("rating")),
-                        request.getParameter("location")
+                        request.getParameter("location"),
+                        request.getParameter("room_number")
                 ))) ? "Room added" : "failed to add room";
                     
                 

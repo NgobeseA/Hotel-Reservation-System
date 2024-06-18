@@ -18,7 +18,7 @@
          %>
         <h3>Sign Up</h3>
         
-        <form action="AdminController" method="post">
+        <form action="UserController" method="post">
             name:<input name="name" type="text"/> <br>
             surname: <input name="surname" type="text"> <br>
             email: <input name="email" type="email"> <br>
@@ -26,7 +26,7 @@
             address: <input name="address" type="text"/> <br>
             password: <input name="password" type="password"/><br>
             admin: <input name="admin" type="checkbox"></br>
-            <input name="submit" type="submit" value="createUser">
+            <input name="submit" type="submit" value="register">
         </form>
     </body>
 </html>

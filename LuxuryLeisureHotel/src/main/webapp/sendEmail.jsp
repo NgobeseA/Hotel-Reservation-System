@@ -18,7 +18,7 @@
         Subject: <input type="text" name="subject" required><br><br>
         Message: <br>
         <textarea name="message" rows="10" cols="30" required></textarea><br><br>
-        <input type="submit" value="Send Email">
+        <input type="submit">
     </form>
     </body>
 </html>

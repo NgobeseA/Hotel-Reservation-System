@@ -18,6 +18,11 @@ import javax.mail.internet.MimeMessage;
 
 //f
 import java.util.Properties;
+import org.simplejavamail.api.email.Email;
+import org.simplejavamail.api.mailer.Mailer;
+import org.simplejavamail.api.mailer.config.TransportStrategy;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.MailerBuilder;
     
 /**
  *
@@ -65,40 +70,72 @@ public class EmailServiceImpl implements EmailService{
 //        return false;
 //    }
     
-    public boolean sendVerificationEmail(String name, String surname, String email, String token){
-      String from = "andilekngobese@gmail.com";
-        String to = email;
-boolean emailSent = false;
-        String password = "isniridlrhrwfcxs";
+    public boolean sendVerificationEmail(String name, String surname, String temail, String token){
+//      String from = "andilekngobese@gmail.com";
+//        String to = email;
+//boolean emailSent = false;
+//        String password = "isniridlrhrwfcxs";
+//        
+//// Add your Gmail password here 
+//
+//        Properties properties = new Properties();
+//        properties.put("mail.smtp.auth", "true"); // Enable authentication
+//        properties.put("mail.smtp.starttls.enable", "true");
+//        properties.put("mail.smtp.host", "smtp.gmail.com");
+//        properties.put("mail.smtp.port", "587");
+//
+//        Session session = Session.getInstance(properties, new Authenticator() {
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(from, password);
+//            }
+//        });
+//
+//        try {
+//            MimeMessage message = new MimeMessage(session);
+//            message.setFrom(new InternetAddress(from));
+//            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+//            message.setSubject("Your Subject");
+//            message.setText("Hello, this is your email content.");
+//
+//            Transport.send(message);
+//            System.out.println("Email sent successfully!");
+//            emailSent = true;
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//      return emailSent;
+
+
         
-// Add your Gmail password here 
-
-        Properties properties = new Properties();
-        properties.put("mail.smtp.auth", "true"); // Enable authentication
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(properties, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, password);
-            }
-        });
 
         try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject("Your Subject");
-            message.setText("Hello, this is your email content.");
+            // Build the email
+            Email email = EmailBuilder.startingBlank()
+                    .from("Luxury Leisure Hotel (LLH)", "andilekngobese@gmail.com")
+                    .to(temail)
+                    .withSubject("test")
+                    .withPlainText("fuck this thing")
+                    .buildEmail();
 
-            Transport.send(message);
-            System.out.println("Email sent successfully!");
-            emailSent = true;
-        } catch (MessagingException e) {
+            // Configure the mailer
+            Mailer mailer = MailerBuilder
+                    .withSMTPServer("smtp.gmail.com", 587, "andilekngobese@gmail.com", "isniridlrhrwfcxs")
+                    .withTransportStrategy(TransportStrategy.SMTP_TLS)
+                    .buildMailer();
+
+            // Send the email
+            mailer.sendMail(email);
+            System.out.println("Email sent successfully to " + temail);
+            return true;
+
+            // Provide feedback to the user
+           
+
+        } catch (Exception e) {
             e.printStackTrace();
+            
         }
-      return emailSent;
+    return false;
     }
     
     public String generateEmailToken(String email){

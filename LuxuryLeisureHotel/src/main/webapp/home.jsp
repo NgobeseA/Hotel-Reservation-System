@@ -15,84 +15,43 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Luxury Leisure Hotel</title>
     </head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
+    <script>
+        function setDefaultDates() {
+            // Get today's date
+            const today = new Date();
+            // Get tomorrow's date
+            const tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
+
+            // Format dates to yyyy-mm-dd
+            const formattedToday = today.toISOString().split('T')[0];
+            const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+
+            // Set the values of the date input fields
+            document.getElementById('checkIn').value = formattedToday;
+            document.getElementById('checkOut').value = formattedTomorrow;
         }
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-        }
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        .container {
-            padding: 20px;
-        }
-        .room-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-        .room-box {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 10px;
-            width: 300px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .room-box img {
-            max-width: 100%;
-            border-radius: 5px;
-        }
-        .room-box h4 {
-            margin: 10px 0;
-        }
-        .room-box p {
-            margin: 5px 0;
-        }
-    </style>
+
+        // Call the function when the window loads
+        window.onload = setDefaultDates;
+    </script>
 </head>
 <body>
 
     <div class="navbar">
-        <a href="home?submit=home">Home</a>
-        <% 
-           
-            User user = (User) request.getSession(false).getAttribute("user");
-            String message = (String) request.getAttribute("message");
-            if(user != null && user.isAdmin()){
-        %>
-        <a href="RoomController?submit=getAddRoomPage">Add Room</a>
-        <a href="AdminController?submit=addUser">Add User</a>
-        <% } else {%>
-        <a href="UserController?submit=getDashboard">My Dashboard</a>
-        <%}%>
-
+        <% User user = (User) request.getSession(false).getAttribute("user");%>
+        <jsp:include page="navbar.jsp"></jsp:include>
     </div>
 
     <div class="container">
-        <% if(message != null) { %>
-        <h3><%=message%></h3>
-        <% } else { %>
         <h1>Live soft life ntanga!</h1>
-        <% } %>
+  
 
         <h3>Book now Ntanga! <%= user != null && user.isAdmin() %></h3>
         <form action="ReservationController" method="post">
-            Check-in: <input name="checkIn" type="date">
+            Check-in: <input name="checkIn" id="checkIn" type="date">
             Check-in Time: <input name="time-in" type="time" value="14:00" readonly><br>
-            Check-Out: <input name="checkOut" type="date">
+            Check-Out: <input name="checkOut" id="checkOut" type="date">
             Check-Out Time: <input name="time-out" type="time" value="12:00" readonly> <br>
 
             <% 

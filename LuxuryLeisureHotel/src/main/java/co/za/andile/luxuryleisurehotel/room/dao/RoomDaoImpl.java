@@ -31,17 +31,21 @@ public class RoomDaoImpl implements RoomDao{
     public List<Room> getAllRooms() {
         List<Room> rooms = new ArrayList<>();
        if(connection != null){
-           String sql = "SELECT id, room_type, rates, occupancy, available FROM room";
+           String sql = "SELECT room_id, room_type, price_per_night, available, rating, picture, description, location FROM rooms";
            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                ResultSet resultSet = preparedStatement.executeQuery();
                
                while(resultSet.next()){
                    Room room = new Room();
-                   room.setId(resultSet.getInt("id"));
-                   room.setRoomType(Enum.valueOf(RoomType.class, resultSet.getString("room_type")));
-                   room.setRates(resultSet.getDouble("rates"));
+                   room.setId(resultSet.getInt("room_id"));
+                   room.setRoomType(Enum.valueOf(RoomType.class,resultSet.getString("roomtype").toUpperCase()));
+                   room.setRates(resultSet.getDouble("price_per_night"));
                    //room.setOccupancy(resultSet.getInt("occupancy"));
                    room.setAvailable(resultSet.getBoolean("available"));
+                   room.setRating(resultSet.getInt("rating"));
+                   room.setPicture(resultSet.getString("picture"));
+                   room.setDescription(resultSet.getString("description"));
+                   room.setLocation(resultSet.getString("location"));
                    
                    rooms.add(room);
                }
@@ -58,7 +62,7 @@ public class RoomDaoImpl implements RoomDao{
         if(connection != null){
             String sql ="INSERT INTO rooms (room_type, price_per_night, available, rating, picture, description, location) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                preparedStatement.setString(1, room.getRoomType().name());
+                preparedStatement.setString(1, room.getRoomType().name().toLowerCase());
                 preparedStatement.setDouble(2, room.getRates());
                 preparedStatement.setBoolean(3, room.isAvailable());
                 preparedStatement.setInt(4, room.getRating());
@@ -91,8 +95,8 @@ public class RoomDaoImpl implements RoomDao{
                ResultSet resultSet = preparedStatement.executeQuery();
                
                if(resultSet.next()){
-                   room.setId(resultSet.getInt("id"));
-                   room.setRoomType(Enum.valueOf(RoomType.class,resultSet.getString("roomtype")));
+                   room.setId(resultSet.getInt("room_id"));
+                   room.setRoomType(Enum.valueOf(RoomType.class,resultSet.getString("room_type").toUpperCase()));
                    room.setRates(resultSet.getDouble("price_per_night"));
                    //room.setOccupancy(resultSet.getInt("occupancy"));
                    room.setAvailable(resultSet.getBoolean("available"));

@@ -101,7 +101,7 @@ public class UserController extends HttpServlet {
                 User user = userService.login(
                         request.getParameter("email"), 
                         request.getParameter("password"));
-                System.out.println("User controller " + user.isAdmin());
+                System.out.println("User controller " + user.getId());
                 if (user != null) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("user", user);
@@ -121,6 +121,14 @@ public class UserController extends HttpServlet {
                 }
                 break;
 
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doDelete(req, resp); 
+        switch(req.getParameter("submit")){
+            case "cancel":
         }
     }
 
