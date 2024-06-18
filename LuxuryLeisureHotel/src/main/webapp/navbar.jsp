@@ -23,14 +23,14 @@
             User user = (User) request.getSession(false).getAttribute("user");
             if (user == null) {
         %>
-        <li><a href="signin.jsp">Sign In</a></li>
-        <li><a href="signup.jsp">Sign Up</a></li>
+        <li><a href="UserController?submit=getLoginPage">Sign In</a></li>
+        <li><a href="UserController?submit=getSignUpPage">Sign Up</a></li>
         <% } else { %>
         <li><a href=""><%= user.getName().toUpperCase() %></a></li>
         <% if(!user.isAdmin()){%>
         <li><a href="UserController?submit=getDashboard">My Dashboard</a></li>
         <%} else {%>
-        <li><a href="">Admin Dashboard</a></li>
+        <li><a href="AdminController?sumit=getDashboard">Admin Dashboard</a></li>
         <% } }%>
     </ul>
 </nav>

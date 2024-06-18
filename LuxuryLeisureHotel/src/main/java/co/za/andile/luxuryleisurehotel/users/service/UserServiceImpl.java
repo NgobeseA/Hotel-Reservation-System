@@ -98,5 +98,10 @@ public class UserServiceImpl implements UserService{
     public List<Reservation> getUserReservation(int userId) {
         return reservationDao.getUserReservations(userId);
     }
+
+    @Override
+    public boolean updateUserProfile(User user) {
+        return userDao.editUser(user);
+    }
  
 }

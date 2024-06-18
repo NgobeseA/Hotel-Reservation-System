@@ -125,12 +125,30 @@ public class UserController extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp); 
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPut(req, resp); //To change body of generated methods, choose Tools | Templates.
         switch(req.getParameter("submit")){
-            case "cancel":
+            case "update":
+                HttpSession session = req.getSession(false);
+                if(userService.updateUserProfile(new User(
+                        req.getParameter("name"),
+                        req.getParameter("surname"),
+                        req.getParameter("email"),
+                        req.getParameter("contact"),
+                        req.getParameter("address"),
+                        false,
+                        false
+                ))){
+                    
+                    session.setAttribute("updateUserMessage", "profile updated");
+                    
+                }else{
+                    session.setAttribute("updateUserMessage", "failed to update your profile");
+                }
         }
     }
+
+    
 
     /**
      * Returns a short description of the servlet.

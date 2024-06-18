@@ -130,4 +130,24 @@ public class UserDaoImpl implements UserDao{
         }
        return i >0;
     }
+
+    @Override
+    public boolean editUser(User user) {
+        if(connection != null){
+            String sql = "UPDATE users SET name = ?, surname =?, email =?, contact=?, address=?, admin=? WHERE id = ?";
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setString(1, user.getName());
+                preparedStatement.setString(2, user.getSurname());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.setString(4, user.getAddress());
+                preparedStatement.setBoolean(5, user.isAdmin());
+                preparedStatement.setInt(6, user.getId());
+                
+                if(preparedStatement.executeUpdate() > 0) return true;
+            } catch (SQLException ex) {
+                Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
 }

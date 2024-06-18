@@ -46,7 +46,7 @@ public class RoomDaoImpl implements RoomDao{
                    room.setPicture(resultSet.getString("picture"));
                    room.setDescription(resultSet.getString("description"));
                    room.setLocation(resultSet.getString("location"));
-                   
+                   room.setRoomNumber(resultSet.getString("room_number"));
                    rooms.add(room);
                }
            } catch (SQLException ex) {
@@ -60,7 +60,7 @@ public class RoomDaoImpl implements RoomDao{
     @Override
     public boolean addRoom(Room room) {
         if(connection != null){
-            String sql ="INSERT INTO rooms (room_type, price_per_night, available, rating, picture, description, location) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql ="INSERT INTO rooms (room_type, price_per_night, available, rating, picture, description, location, room_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1, room.getRoomType().name().toLowerCase());
                 preparedStatement.setDouble(2, room.getRates());
@@ -69,6 +69,7 @@ public class RoomDaoImpl implements RoomDao{
                 preparedStatement.setString(5, room.getPicture());
                 preparedStatement.setString(6, room.getDescription());
                 preparedStatement.setString(7, room.getLocation());
+                preparedStatement.setString(8, room.getRoomNumber());
                 
                 if(preparedStatement.executeUpdate() > 0) return true;
             }

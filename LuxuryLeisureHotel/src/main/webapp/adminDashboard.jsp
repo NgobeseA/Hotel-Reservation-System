@@ -24,11 +24,13 @@
             <div>
                 <div>
                     <h3>Reservations</h3>
+                    
                 </div>
                 <div>
                     <h3>Users</h3>
                 </div>
             </div>
         </div>
+        <% } else {%> <jsp:include page="unauthorized.jsp" /><%}%>
     </body>
 </html>

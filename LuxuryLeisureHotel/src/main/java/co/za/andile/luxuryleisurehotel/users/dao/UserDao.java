@@ -16,4 +16,5 @@ public interface UserDao {
     User getUser(String email, String password);
     void duplicateUser(String email) throws DuplicateUserException;
     boolean verifyToken(String token);
+    boolean editUser(User user);
 }

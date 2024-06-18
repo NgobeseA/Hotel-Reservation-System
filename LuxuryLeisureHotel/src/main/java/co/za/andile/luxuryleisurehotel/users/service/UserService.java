@@ -18,4 +18,5 @@ public interface UserService {
     User login(String email, String password);
     String tokenVerification(String token);
     List<Reservation> getUserReservation(int userId);
+    boolean updateUserProfile(User user);
 }
