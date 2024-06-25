@@ -21,8 +21,9 @@
         <section>
         <% 
             User user = (User) request.getSession(false).getAttribute("user");
-            List<Reservation> rightReservations = (List<Reservation>) request.getSession(false).getAttribute("rightReservations");
-            List<Reservation> wrongReservations = (List<Reservation>) request.getSession(false).getAttribute("wrongReservations");
+            String serviceMessage = (String) request.getAttribute("serviceMessage");
+            List<Reservation> rightReservations = (List<Reservation>) request.getAttribute("rightReservations");
+            List<Reservation> wrongReservations = (List<Reservation>) request.getAttribute("wrongReservations");
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMM YYYY");
             if(user != null && user.isAdmin()){
             %>
@@ -78,7 +79,7 @@
                     </tbody>
                 </table>
                 
-                <%}}%>
+                                           <%}} %>
                 </div>
                 
                 <!---  WRONG RESERVATIONS  ---->
@@ -114,6 +115,7 @@
                 <%}}%>
                 </div>
             </div>
+                <%if(serviceMessage != null){%><h5><%= serviceMessage %></h5><%}%>
         <%} else {%> <jsp:include page="unauthorized.jsp" /> <%}%>
         </section>
     </body>

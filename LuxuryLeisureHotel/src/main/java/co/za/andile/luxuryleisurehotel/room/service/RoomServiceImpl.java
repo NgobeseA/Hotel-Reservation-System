@@ -81,4 +81,12 @@ public class RoomServiceImpl implements RoomService{
     public boolean editRoomAvailabity(int room_id, boolean available) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Room getRoomById(int room_id) {
+        return getAllRooms().stream()
+                .filter(room -> room.getId() == room_id)
+                .findFirst()
+                .orElse(null);
+    }
 }

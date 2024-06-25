@@ -27,7 +27,8 @@
                 %>
                 <li><a href="UserController?submit=getLoginPage">Sign In</a></li>
                 <li><a href="UserController?submit=getSignUpPage">Sign Up</a></li>
-                <% } else { StringBuilder initials = new StringBuilder(user.getName().charAt(0));
+                <% } else { StringBuilder initials = new StringBuilder();
+                    initials.append(user.getName().charAt(0));
                     initials.append(user.getSurname().charAt(0));%>
                     <li><a href="ReservationController?submit=getBookingPage">Booking</a></li>
                     <% if(!user.isAdmin()){%>

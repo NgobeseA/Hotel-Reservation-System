@@ -58,3 +58,8 @@ butto{
     border-radius: 15px;
     text-transform: uppercase;
 }
+
+.header .button a{
+    text-decoration: none;
+    color: #fff;
+}

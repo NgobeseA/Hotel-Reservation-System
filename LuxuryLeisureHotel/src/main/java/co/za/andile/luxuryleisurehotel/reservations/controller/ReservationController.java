@@ -188,8 +188,8 @@ public class ReservationController extends HttpServlet {
         List<Reservation> wrongReservations = reservations.stream()
                 .filter(s -> s.getStatus() == Status.CANCELLED || s.getStatus() == Status.CHECKED_OUT)
                 .collect(Collectors.toList());
-        session.setAttribute("rightReservations", rightReservations);
-        session.setAttribute("wrongReservations", wrongReservations);
+        request.setAttribute("rightReservations", rightReservations);
+        request.setAttribute("wrongReservations", wrongReservations);
         
         try {
             request.getRequestDispatcher("guestService.jsp").forward(request, response);

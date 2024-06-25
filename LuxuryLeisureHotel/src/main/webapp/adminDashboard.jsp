@@ -78,9 +78,11 @@
                     </table>
                 </div>
                 <div>
-                    <h3>Rooms</h3>
-                    <div>
+                    <div class="header">
+                        <h3>Rooms</h3>
+                        <div class="button">
                         <a href="RoomController?submit=getAddRoomPage">Add Room</a>
+                    </div>
                     </div>
                     <div>
                         <table>
@@ -90,8 +92,6 @@
                                 <th>Room Number</th>
                                 <th>Room Type</th>
                                 <th>Room Location</th>
-                                <th>Ratings</th>
-                                <th>Available</th>
                                 <th>Price per night</th>
                                 <th>Action</th>
                             </tr>
@@ -101,12 +101,12 @@
                                 <td><%=room.getRoomNumber()%></td>
                                 <td><%=room.getRoomType()%></td>
                                 <td><%=room.getLocation()%></td>
-                                <td><%=room.isAvailable()%></td>
                                 <td><%=room.getRates()%></td>
                                 <td>
                                     <form action="RoomController" method="get" style="display:inline;">
                                         <input type="hidden" name="roomId" value="<%= room.getId() %>">
-                                        <input type="submit" name="submit" value="getAddRoomPage">
+                                        <input type="hidden" name="submit" value="getAddRoomPage">
+                                        <button class="button" type="submit">Edit</button>
                                     </form>
                                     <form action="RoomController" method="post" style="display:inline;">
                                         <input type="hidden" name="roomId" value="<%= room.getId() %>">

@@ -25,4 +25,5 @@ public interface RoomService {
     List<RoomType> getRoomTypes();
     RoomType getRoomType(int id);
     boolean  editRoomAvailabity(int room_id, boolean available);
+    Room getRoomById(int room_id);
 }

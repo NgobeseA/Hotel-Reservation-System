@@ -48,16 +48,10 @@ public class RoomController extends HttpServlet {
         processRequest(request, response);
         switch(request.getParameter("submit")){
             case "getAddRoomPage":
-                List<RoomType> roomtypes = roomTypeService.getRoomTypes();
-                HttpSession session = request.getSession(false);
-                session.setAttribute("RoomTypes", roomtypes);
-                request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+               handleAddRoomPage(request, response);
                 break;
             case "getRoomType":
-                roomtypes = roomTypeService.getRoomTypes();
-                session = request.getSession(false);
-                session.setAttribute("RoomTypes", roomtypes);
-                request.getRequestDispatcher("roomTypes.jsp").forward(request, response);
+                handleGetRoomType(request, response);
                 break;
         }
     }
@@ -94,17 +88,23 @@ public class RoomController extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp); //To change body of generated methods, choose Tools | Templates.
+    private void handleAddRoomPage(HttpServletRequest request, HttpServletResponse response){
+         List<RoomType> roomtypes = roomTypeService.getRoomTypes();
+                HttpSession session = request.getSession(false);
+                session.setAttribute("RoomTypes", roomtypes);
+        Room room = roomService.getRoomById(Integer.parseInt(request.getParameter("roomId")));
+                
+        request.setAttribute("roomToedit", room);
+        try {
+            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    
+    private void handleGetRoomType()
 
     /**
      * Returns a short description of the servlet.
