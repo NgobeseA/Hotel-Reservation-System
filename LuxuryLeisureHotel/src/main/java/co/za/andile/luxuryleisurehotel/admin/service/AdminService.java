@@ -6,8 +6,10 @@
 package co.za.andile.luxuryleisurehotel.admin.service;
 
 import co.za.andile.luxuryleisurehotel.admin.model.Admin;
+import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.room.model.Room;
 import co.za.andile.luxuryleisurehotel.users.model.User;
+import java.util.List;
 
 /**
  *
@@ -17,4 +19,5 @@ public interface AdminService {
     Admin getAdmin(int id);
     boolean createUser(User user, String password);
     boolean addRoom(Room room);
+    List<Room> getAllRooms();
 }

@@ -1,0 +1,60 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24 Jun 2024, 12:44:03
+    Author     : T440
+*/
+
+.container{
+    padding: 100px 200px;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td{
+    padding: 2px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover{
+    background-color: #f1f1f1;
+}
+
+.table{
+    box-shadow: 0px 2px 5px 2px rgba(65, 64, 64, 0.281);
+    padding: 5px;
+}
+butto{
+    border-radius: 20px;
+    border: 1px solid #141E30;
+    background: #243855;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button{
+    padding: 8px 16px;
+    background-color: #243855;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    text-transform: uppercase;
+}

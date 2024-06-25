@@ -16,5 +16,4 @@ import co.za.andile.luxuryleisurehotel.users.model.User;
 public interface AdminDao {
     Admin getAdmin(int id);
     boolean addUser(User user, String token, String password);
-    boolean addRoom(Room room);
 }

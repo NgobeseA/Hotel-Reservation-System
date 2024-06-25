@@ -14,7 +14,7 @@ import java.util.List;
  * @author T440
  */
 public interface UserService {
-    boolean createUser(String name, String surname, String email, String contact, String address, String password, boolean admin, boolean verified);
+    boolean createUser(String name, String surname, String email, String contact, String password, boolean admin);
     User login(String email, String password);
     String tokenVerification(String token);
     List<Reservation> getUserReservation(int userId);

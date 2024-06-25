@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.za.andile.luxuryleisurehotel.diningpreferences.model;
+package co.za.andile.luxuryleisurehotel.payments.model;
 
 /**
  *
  * @author T440
  */
-public enum MealType {
-    BREAKFAST,
-    LUNCH,
-    DINNER,
-    ROOMSERVICE
+public enum PaymentTypes {
+    VISA, PAYPAL
 }

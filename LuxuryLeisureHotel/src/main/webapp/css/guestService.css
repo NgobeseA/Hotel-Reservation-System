@@ -1,0 +1,52 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24 Jun 2024, 20:39:27
+    Author     : T440
+*/
+section{
+    padding: 100px 200px;
+}
+
+butto{
+    border-radius: 20px;
+    border: 1px solid #141E30;
+    background: #243855;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.infield{
+    position: relative;
+    margin: 8px 0px;
+    width: 100%;
+}
+
+.email-container{
+    display: flex;
+    align-items: center;
+}
+
+.email-input{
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 25px;
+}
+
+.email-button{
+    padding: 10px 20px;
+    background-color: #243855;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    text-transform: uppercase;
+}

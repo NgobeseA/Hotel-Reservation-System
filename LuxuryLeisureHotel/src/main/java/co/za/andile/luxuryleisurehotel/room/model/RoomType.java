@@ -9,6 +9,24 @@ package co.za.andile.luxuryleisurehotel.room.model;
  *
  * @author T440
  */
-public enum RoomType {
-    SINGLE,DOUBLE,SUITE
-}
+ enum RoomType {
+    SINGLE,DOUBLE,SUITE;
+    private String picture;
+
+    private RoomType() {
+    }
+
+    private RoomType(String picture) {
+        this.picture = picture;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+    
+    
+ }

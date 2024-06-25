@@ -27,12 +27,23 @@ public class Reservation {
     private LocalDateTime check_in;
     private LocalDateTime check_out;
     private Status status;
-    
-    public Reservation(User user, Room room, LocalDateTime check_in, LocalDateTime check_out, Status status) {
+    private String meal_type;
+    private String dietary_restriction;
+
+    public Reservation(User user, Room room, LocalDateTime check_in, LocalDateTime check_out, Status status, String meal_type, String dietary_restriction) {
         this.user = user;
         this.room = room;
         this.check_in = check_in;
         this.check_out = check_out;
         this.status = status;
+        this.meal_type = meal_type;
+        this.dietary_restriction = dietary_restriction;
     }
+
+    @Override
+    public String toString() {
+        return meal_type ;
+    }
+    
+    
 }

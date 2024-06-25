@@ -43,7 +43,7 @@ public class EmailController extends HttpServlet {
 
             // Configure the mailer
             Mailer mailer = MailerBuilder
-                    .withSMTPServer("smtp.office365.com", 587, "andilek.ngobese@outlook.com", "@AKphyco99")
+                    .withSMTPServer("smtp.gmail.com", 2525, "andilekngobese@gmail.com", "isni ridl rhrw fcxs")
                     .withTransportStrategy(TransportStrategy.SMTP_TLS)
                     .buildMailer();
 

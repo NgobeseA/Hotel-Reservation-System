@@ -23,18 +23,18 @@ public class User {
     private String contact;
     private String address;
     private boolean admin;
-    private boolean verified;
+    //private boolean verified;
     //private String emailToken;
     //private String password;
 
-    public User(String name, String surname, String email, String contact, String address, boolean admin, boolean verified) {
+    public User(String name, String surname, String email, String contact, String address, boolean admin) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.contact = contact;
         this.address = address;
         this.admin = admin;
-        this.verified = verified;
+        //this.verified = verified;
         //this.emailToken = emailToken;
         //this.password = password;
     } 

@@ -13,18 +13,18 @@ import co.za.andile.luxuryleisurehotel.reservations.dao.ReservationDao;
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.users.dao.UserDao;
 import co.za.andile.luxuryleisurehotel.users.emailservice.EmailService;
-import co.za.andile.luxuryleisurehotel.users.emailservice.EmailServiceImpl;
+
 import co.za.andile.luxuryleisurehotel.users.encryption.UserEncryptionService;
 import co.za.andile.luxuryleisurehotel.users.model.User;
-import java.sql.Connection;
+
 import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.mail.*;
-import javax.mail.internet.*;
-import org.mindrot.jbcrypt.BCrypt;
+//import java.util.Properties;
+//import java.util.UUID;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import javax.mail.*;
+//import javax.mail.internet.*;
+//import org.mindrot.jbcrypt.BCrypt;
 
 
 /**
@@ -47,31 +47,34 @@ public class UserServiceImpl implements UserService{
     public UserServiceImpl(ReservationDao reservationDao){
         this.reservationDao = reservationDao;
     }
+    public UserServiceImpl(UserDao userDao){
+        this.userDao = userDao;
+    }
     
     @Override
-    public boolean createUser(String name, String surname, String email, String contact, String address, String password, boolean admin, boolean verified){
+    public boolean createUser(String name, String surname, String email, String contact, String password, boolean admin){
         boolean result = false;
         
         try {
-            InvalidData.validateData(name, surname, email, contact, address, password);
+            InvalidData.validateData(name, surname, email, contact, password);
             userDao.duplicateUser(email);
             String token = emailService.generateEmailToken(email);
             User user = new User();
             user.setName(name);
             user.setSurname(surname);
-            user.setAddress(address);
+            //user.setAddress(address);
             user.setContact(contact);
             user.setEmail(email);
             //user.setEmailToken(token);
             user.setAdmin(admin);
-            user.setVerified(verified);
+            
             String userPassword = userEncryptService.hashingPassword(password);
             System.out.println("USER CREDENTIALS GOTTEN");
             System.out.println("\n\n\n sending data to email");
             
-            if(emailService.sendVerificationEmail(name, surname, email, token)){
-                result= userDao.addUser(user, token, userPassword);
-            }
+            //if(emailService.sendVerificationEmail(name, surname, email, token)){
+                result= userDao.addUser(user, userPassword);
+            //}
             
         } catch (InvalidDataException ex) {
             

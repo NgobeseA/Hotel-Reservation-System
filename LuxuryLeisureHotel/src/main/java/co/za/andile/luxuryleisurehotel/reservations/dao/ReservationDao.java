@@ -6,6 +6,7 @@
 package co.za.andile.luxuryleisurehotel.reservations.dao;
 
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
+import co.za.andile.luxuryleisurehotel.reservations.model.Status;
 import java.util.List;
 
 /**
@@ -16,4 +17,7 @@ public interface ReservationDao {
     boolean addReservation(Reservation reservation);
     boolean editReservation(Reservation reservation);
     List<Reservation> getUserReservations(int user_id);
+    List<Reservation> getReservations();
+    boolean updateReservationStatus(int id, Status status);
+    boolean removeReservation(int reservation_id);
 }

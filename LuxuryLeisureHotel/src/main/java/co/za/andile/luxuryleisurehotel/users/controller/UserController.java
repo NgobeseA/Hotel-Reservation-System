@@ -11,6 +11,8 @@ import co.za.andile.luxuryleisurehotel.reservations.dao.ReservationDaoImpl;
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.room.dao.RoomDaoImpl;
 import co.za.andile.luxuryleisurehotel.room.model.Room;
+import co.za.andile.luxuryleisurehotel.room.roomtype.dao.RoomTypeDaoImpl;
+import co.za.andile.luxuryleisurehotel.room.roomtype.model.RoomType;
 import co.za.andile.luxuryleisurehotel.room.service.RoomService;
 import co.za.andile.luxuryleisurehotel.room.service.RoomServiceImpl;
 import co.za.andile.luxuryleisurehotel.users.dao.UserDaoImpl;
@@ -43,6 +45,8 @@ public class UserController extends HttpServlet {
             new UserEncryptServiceImpl()
     );
     private final UserService userServiceReservation = new UserServiceImpl(new ReservationDaoImpl(new DBConnection().connect()));
+    private final RoomService roomTService = new RoomServiceImpl(new RoomTypeDaoImpl(new DBConnection().connect()));
+    
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,11 +69,15 @@ public class UserController extends HttpServlet {
             case "getDashboard":
                 HttpSession session = request.getSession(false);
                 User user = (User) session.getAttribute("user");
-                System.out.println("User id from session: "+ user.getId());
                 List<Reservation> reservations = userServiceReservation.getUserReservation(user.getId());
                 session.setAttribute("reservations", reservations);
                 request.getRequestDispatcher("userDashboard.jsp").forward(request, response);
                 break;
+            case "logout":
+                session = request.getSession(false);
+                
+                session.removeAttribute("user");
+                request.getRequestDispatcher("home?submit=home").forward(request, response);
         }
     }
 
@@ -81,17 +89,17 @@ public class UserController extends HttpServlet {
         
         switch(request.getParameter("submit")){
             case "register":
-                 boolean result = userService.createUser(
+                boolean isAdmin = request.getParameter("admin") != null;
+                boolean result = userService.createUser(
                         request.getParameter("name"),
                         request.getParameter("surname"),
                         request.getParameter("email"),
                         request.getParameter("contact"),
-                        request.getParameter("address"),
-                        request.getParameter("password"), false, false);
+                        request.getParameter("password"), isAdmin);
                  
                 if(result){
                     //request.setAttribute("message", message);
-                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }else{
                     request.setAttribute("message", "failed to register");
                     request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -102,19 +110,14 @@ public class UserController extends HttpServlet {
                         request.getParameter("email"), 
                         request.getParameter("password"));
                 System.out.println("User controller " + user.getId());
-                if (user != null) {
+                if (user.getName() != null) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("user", user);
-                    List<Room> rooms = roomService.getAllAvailableRooms();
-                    session.setAttribute("rooms", rooms);
-                    System.out.println("About to go down");
-                    rooms.forEach(System.out::println);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
-                    if (dispatcher == null) {
-                        System.out.println("RequestDispatcher for 'home.jsp' is null.");
-                    } else {
-                        dispatcher.forward(request, response);
-                    }
+                    List<RoomType> rooms = roomTService.getRoomTypes();
+                    if(rooms != null)
+                        session.setAttribute("roomtypes", rooms);
+                    request.getRequestDispatcher("home.jsp").forward(request, response);
+                    
                 } else {
                     request.setAttribute("message", "Incorrect details");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -136,7 +139,6 @@ public class UserController extends HttpServlet {
                         req.getParameter("email"),
                         req.getParameter("contact"),
                         req.getParameter("address"),
-                        false,
                         false
                 ))){
                     

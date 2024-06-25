@@ -31,7 +31,7 @@ public class AdminDaoImpl implements AdminDao{
     public Admin getAdmin(int id) {
         Admin admin = new Admin();
         if(connection != null){
-            String sql = "SELECT id, name, surname, email, contact, address, password, admin, registration_token, verified FROM users WHERE id =?";
+            String sql = "SELECT id, name, surname, email, contact, address, password, admin FROM users WHERE id =?";
             try(PreparedStatement ps = connection.prepareStatement(sql)){
                ps.setInt(1, id);
                 ResultSet resultSet = ps.executeQuery();
@@ -42,10 +42,8 @@ public class AdminDaoImpl implements AdminDao{
                         admin.setSurname(resultSet.getString("surname"));
                         admin.setEmail(resultSet.getString("email"));
                         admin.setAddress(resultSet.getString("address"));
-                        admin.setPassword(resultSet.getString("password"));
+                        //admin.setPassword(resultSet.getString("password"));
                         admin.setAdmin(resultSet.getBoolean("admin"));
-                        admin.setEmailToken(resultSet.getString("registration_token"));
-                        admin.setVerified(resultSet.getBoolean("verified"));
                         admin.setContact(resultSet.getString("contact")); 
                     }     
                 }
@@ -59,7 +57,7 @@ public class AdminDaoImpl implements AdminDao{
     @Override
     public boolean addUser(User user, String token, String password) {
         if(connection != null){
-            String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getSurname());
@@ -69,7 +67,6 @@ public class AdminDaoImpl implements AdminDao{
                 preparedStatement.setString(6, password);
                 preparedStatement.setBoolean(7, user.isAdmin());
                 preparedStatement.setString(8, token);
-                preparedStatement.setBoolean(9, user.isVerified());
                 
                 if(preparedStatement.executeUpdate() > 0) return true;
             } catch (SQLException ex) {
@@ -78,27 +75,4 @@ public class AdminDaoImpl implements AdminDao{
         }
         return false;
     }
-
-    @Override
-    public boolean addRoom(Room room) {
-        if(connection != null){
-            String sql ="INSERT INTO rooms (room_type, price_per_night, available, rating, picture, description) VALUES (?, ?, ?, ?,?,?)";
-            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                preparedStatement.setString(1, room.getRoomType().name());
-                preparedStatement.setDouble(2, room.getRates());
-                preparedStatement.setBoolean(3, room.isAvailable());
-                preparedStatement.setInt(4, room.getRating());
-                preparedStatement.setString(5, room.getPicture());
-                preparedStatement.setString(5, room.getDescription());
-                
-                if(preparedStatement.executeUpdate() > 0) return true;
-            }
-          catch (SQLException ex) {
-                Logger.getLogger(AdminDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        return false;
-    }
-    
 }

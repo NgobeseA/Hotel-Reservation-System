@@ -5,7 +5,6 @@
  */
 package co.za.andile.luxuryleisurehotel.diningpreferences.model;
 
-import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +17,10 @@ import lombok.Setter;
 @AllArgsConstructor@NoArgsConstructor@Getter@Setter
 public class DiningPreferences {
     private int diningId;
-    private Reservation reservation;
-    private MealType mealType;
-    private DietaryRestriction dietaryRestriction;
+    private String mealType;
+    private String dietaryRestriction;
 
-    public DiningPreferences(Reservation reservation, MealType mealType, DietaryRestriction dietaryRestriction) {
-        this.reservation = reservation;
+    public DiningPreferences(String mealType, String dietaryRestriction) {
         this.mealType = mealType;
         this.dietaryRestriction = dietaryRestriction;
     }

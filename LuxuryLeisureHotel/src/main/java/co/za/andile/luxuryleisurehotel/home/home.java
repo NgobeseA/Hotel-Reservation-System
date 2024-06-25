@@ -8,6 +8,8 @@ package co.za.andile.luxuryleisurehotel.home;
 import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.room.dao.RoomDaoImpl;
 import co.za.andile.luxuryleisurehotel.room.model.Room;
+import co.za.andile.luxuryleisurehotel.room.roomtype.dao.RoomTypeDaoImpl;
+import co.za.andile.luxuryleisurehotel.room.roomtype.model.RoomType;
 import co.za.andile.luxuryleisurehotel.room.service.RoomService;
 import co.za.andile.luxuryleisurehotel.room.service.RoomServiceImpl;
 import java.io.IOException;
@@ -27,7 +29,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "home", urlPatterns = {"/home"})
 public class home extends HttpServlet {
-    private RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new DBConnection().connect()));
+    private RoomService roomService = new RoomServiceImpl(new RoomTypeDaoImpl(new DBConnection().connect()));
   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,9 +44,8 @@ public class home extends HttpServlet {
         processRequest(request, response);
         switch(request.getParameter("submit")){
             case "home":
-                List<Room> listRooms = roomService.getAllAvailableRooms();
-                HttpSession session = request.getSession(false);
-                session.setAttribute("rooms", listRooms);
+                List<RoomType> listRooms = roomService.getRoomTypes();
+                request.setAttribute("roomtypes", listRooms);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
                 dispatcher.forward(request, response);
         }

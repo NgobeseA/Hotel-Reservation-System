@@ -10,22 +10,22 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Sign In</title>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/login.css">
     </head>
     <body>
         <%
            String message = (String) request.getAttribute("message");
-           
-           if(message != null){
          %>
-         <h3><%= message %></h3>
-         <%}%>
-         
-        <h1>Sign In</h1>
+         <jsp:include page="navbar.jsp" />
+         <section class="container">
+             <h1>Sign In</h1>
         
         <form action="UserController" method="post">
             email: <input name="email" type="email"> </br>
             password: <input name="password" type="password"></br>
+            <% if(message != null){%><p><%=message%></p><%}%>
             <input name="submit" type="submit" value="login">
         </form>
+         </section>
     </body>
 </html>

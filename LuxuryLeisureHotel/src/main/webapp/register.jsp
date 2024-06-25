@@ -11,22 +11,39 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Sign Up</title>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/signup.css">
     </head>
     <body>
         <%
-           User user = (User) request.getSession(false).getAttribute("user");
-         %>
-        <h3>Sign Up</h3>
-        
-        <form action="UserController" method="post">
-            name:<input name="name" type="text"/> <br>
-            surname: <input name="surname" type="text"> <br>
-            email: <input name="email" type="email"> <br>
-            contact number: <input name="contact" type="number"> <br/>
-            address: <input name="address" type="text"/> <br>
-            password: <input name="password" type="password"/><br>
-            admin: <input name="admin" type="checkbox"></br>
-            <input name="submit" type="submit" value="register">
-        </form>
+                User user = (User) request.getSession(false).getAttribute("user");
+            %>
+        <jsp:include page="navbar.jsp" />
+        <section id="container" class="container">
+            
+            <div class="form-container sign-up-container">
+                <h3>Sign Up</h3>
+
+                <form action="UserController" method="post">
+                    <div class="infield">
+                        <input placeholder="name" name="name" type="text"/>
+                    </div>
+                    <div class="infield"><input placeholder="surname" name="surname" type="text"> </div>
+                    <div class="infield"> <input placeholder="email" name="email" type="email"> </div>
+                    <div class="infield"> <input placeholder="contact number" name="contact" type="number"> </div>
+                    <div class="infield"> <input placeholder="password" name="password" type="password"></div>
+                    <div class="infield">admin: <input name="admin" type="checkbox">  </div>
+                    <input class="button" name="submit" type="submit" value="register">
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h3>Wola, Good to see you!</h3>
+                        <p>Keep connected with us where good times are in our place</p>
+                        <button>Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </body>
 </html>

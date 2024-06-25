@@ -12,15 +12,46 @@ body {
 }
 
 .container{
-    
-}
-
-.history-container{
+    padding: 100px 200px;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
     display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
-.reservation-ticket{
-    border: 1px;
-    padding: 20px;
-    font-size: 18px;
+.row{
+    margin: 0 -5px;
+}
+
+.column{
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+}
+
+.row:after{
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.card{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-color: #f1f1f1;
+}
+
+button{
+    border-radius: 20px;
+    border: 1px solid #141E30;
+    background: #243855;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }

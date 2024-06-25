@@ -27,20 +27,17 @@ public class UserDaoImpl implements UserDao{
     }
    
     @Override
-    public boolean addUser(User user, String token, String password){
+    public boolean addUser(User user, String password){
         int i =0;
         if(connection != null){
-            String sql = "INSERT INTO users (name, surname, email, contact, address, password, admin, registration_token, verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (name, surname, email, contact, password, admin) VALUES (?, ?, ?, ?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getSurname());
                 preparedStatement.setString(3, user.getEmail());
                 preparedStatement.setString(4, user.getContact());
-                preparedStatement.setString(5, user.getAddress());
-                preparedStatement.setString(6, password);
-                preparedStatement.setBoolean(7, user.isAdmin());
-                preparedStatement.setString(8, token);
-                preparedStatement.setBoolean(9, user.isVerified());
+                preparedStatement.setString(5, password);
+                preparedStatement.setBoolean(6, user.isAdmin());
                 
                 i = preparedStatement.executeUpdate();
             } catch (SQLException ex) {
@@ -55,23 +52,23 @@ public class UserDaoImpl implements UserDao{
     public User getUser(String email, String password) {
         User user = new User();
         if(connection != null){
-            String sql = "SELECT id, name, surname, email, contact, address, password, admin, registration_token, verified FROM users WHERE email = ?";
+            String sql = "SELECT id, name, surname, email, contact, password, admin FROM users WHERE email = ?";
             try(PreparedStatement ps = connection.prepareStatement(sql)){
                 ps.setString(1, email);
-                ResultSet resultSet = ps.executeQuery();
+                try(ResultSet resultSet = ps.executeQuery()){
                 if(resultSet.next()){
                    if(new UserEncryptServiceImpl().passwordVerification(password, resultSet.getString("password"))){ // verifying password
                         user.setId(resultSet.getInt("id"));
                         user.setName(resultSet.getString("name"));
                         user.setSurname(resultSet.getString("surname"));
                         user.setEmail(resultSet.getString("email"));
-                        user.setAddress(resultSet.getString("address"));
-                        System.out.println(resultSet.getBoolean("admin") +" from DAO");
+                        //user.setAddress(resultSet.getString("address"));
                         user.setAdmin(resultSet.getBoolean("admin"));
                         //user.setEmailToken(resultSet.getString("registration_token"));
-                        user.setVerified(resultSet.getBoolean("verified"));
+                        
                         user.setContact(resultSet.getString("contact"));
                    }
+                }
                 }
                 
             } catch (SQLException ex) {
@@ -89,10 +86,11 @@ public class UserDaoImpl implements UserDao{
             try(PreparedStatement ps = connection.prepareStatement(sql)){
                 ps.setString(1, email);
                 
-                ResultSet resultSet = ps.executeQuery();
+                try(ResultSet resultSet = ps.executeQuery()){
                 
                 if(resultSet.next()){
                     throw new DuplicateUserException();
+                }
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,7 +110,7 @@ public class UserDaoImpl implements UserDao{
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ps.setString(1, token);
 
-                ResultSet resultSet = ps.executeQuery();
+                try(ResultSet resultSet = ps.executeQuery()){
 
                 if(resultSet.next()){
                     int userId = resultSet.getInt("id");
@@ -123,6 +121,7 @@ public class UserDaoImpl implements UserDao{
 
                     i = ps.executeUpdate();
 
+                }
                 }
             } catch (SQLException ex) {
              Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);

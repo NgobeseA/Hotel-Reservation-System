@@ -12,6 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Payment</title>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/payment.css">
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
@@ -19,18 +20,23 @@
             <% 
             User user = (User) request.getSession(false).getAttribute("user");
             Reservation reservation = (Reservation) request.getSession(false).getAttribute("reservation");
+            Double amount = (Double) request.getSession(false).getAttribute("total_amount");
             if(user != null){
                 %>
                 <div class="reservation-summary">
                     <h3>Reservation Summary</h3>
                     <div>
-                        <p>Reserving for date to be added</p>
-                        <p><%= reservation.getRoom().getRoomType().name()%></p>
+                        <h5>Reserving for <%= reservation.getCheck_in()%> - <%= reservation.getCheck_out()%></h5>
+                            <hr>
+                        <p><%= reservation.getRoom().getRoomType().getRoom_type() %></p>
                         <p><%= reservation.getRoom().getLocation()%></p>
+                        <p><%= reservation.getRoom().getRoomNumber() %></p>
+                        <p><%= reservation.getMeal_type() %></p>
+                        <p>Reservation was made on the: <%= reservation.getCreated_on() %></p>
                         <p>room per night:  ZAR <%= reservation.getRoom().getRates() %></p>
                         <hr>
-                        <p> Total amount:   ZAR</p>
-                        <p>including VAT</p>
+                        <p> Total amount:   ZAR <%= amount %></p>
+                        <p>including VAT    ZAR <%= amount  %></p>
                     </div>
                 </div>
                 <div class="payment">
@@ -48,10 +54,13 @@
                             </div></br>
                             <label>Valid thru</label>
                             <input name="validthru" type="date"></br>
-                            <input name="submit" value="checkout" type="submit">
+                            <input name="amount" value="<%= amount%>" type="hidden">
+                            <input name="reservationId" value="<%= reservation.getBookingId() %>" type="hidden"> 
+                            <input name="submit" value="pay now" type="submit">
                         </form>
                     </div>
                 </div>
+                        <%} else {%> <jsp:include page="unauthorized.jsp" /><%}%>
         </div>
         
        

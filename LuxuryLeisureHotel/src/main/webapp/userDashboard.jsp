@@ -22,34 +22,41 @@
         <%
            
             User user = (User) request.getSession(false).getAttribute("user");
-            if(user == null || user.isAdmin()){
+            if(user == null && user.isAdmin()){
         %>
         <h1>You are not Authorized to access this page</h1>
         <%} else {%>
-        <div class="history-container">
-            <h3>Upcoming stays</h3>
-            <div class="reservation-ticket">
-                <% 
-                List<Reservation> reservations = (List<Reservation>) request.getSession(false).getAttribute("reservations");
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM YYYY");
-                if(reservations != null || reservations.size() > 0){
-                    for(Reservation reservation : reservations){
-                       String startDate = reservation.getCheck_in().format(dateFormatter);
-                       String endDate = reservation.getCheck_out().format(dateFormatter);
-                       String status = reservation.getStatus().name();
-            %>
-            <p>Reservation for <%=startDate%> - <%= endDate %></p>
-            <p><%= reservation.getRoom().getLocation() %></p>
-            <p><%=reservation.getRoom().getRoomType().name()%></p>
-            
-            <p>Room offer   ZAR <%=reservation.getRoom().getRates()%></p>
-            <p><%=status%></p>
-            <% if("PENDING".equals(status)){%>
-            <p>Please proceed to <a href="PaymentController?submit=getPaymentPage">payment</a></p>
-            <form action="UserController" method="post">
-                <input name="submit" value="cancel" type="submit">
-            </form>
-            <%}%> 
+        <div class="container">
+            <div class="row">
+                 <h3>Upcoming stays</h3>
+                 <% 
+                        List<Reservation> reservations = (List<Reservation>) request.getSession(false).getAttribute("reservations");
+                        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM YYYY");
+                        if(reservations != null || reservations.size() > 0){
+                            for(Reservation reservation : reservations){
+                               String startDate = reservation.getCheck_in().format(dateFormatter);
+                               String endDate = reservation.getCheck_out().format(dateFormatter);
+                               String status = reservation.getStatus().name();
+                    %>
+            <div class="column">
+                <div class="card">
+                    
+                    <p><strong>Reservation for <%=startDate%> - <%= endDate %></strong></p>
+                    <hr>
+                    <p><%= reservation.getRoom().getLocation() %></p>
+                    <p><p>
+
+                    <p>Room offer   ZAR <%=reservation.getRoom().getRates()%></p>
+                    <p><%=status%></p>
+                    <% if("PENDING".equals(status)){%>
+                    <p>Please proceed to <a href="PaymentController?submit=getPaymentPage&reservationId=<%=reservation.getBookingId()%>">payment</a></p>
+                    <form action="UserController" method="post">
+                        <input name="submit" value="cancel" type="hidden">
+                        <button type="submit">Cancel</button>
+                    </form>
+                    <%}%>
+                </div>
+                 
             </div>
             <%    }
             } else {%>
@@ -57,6 +64,7 @@
             <p>If you wish to make reservation <a href="home?submit=home">click here</a></p>
             <%}
 }%>
+            </div>
         </div>
     </body>
 </html>

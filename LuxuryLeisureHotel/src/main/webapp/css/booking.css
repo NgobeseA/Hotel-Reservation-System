@@ -1,0 +1,51 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22 Jun 2024, 21:59:51
+    Author     : T440
+*/
+
+section{
+    padding: 100px 200px;
+}
+
+input[type='date']{
+    padding: 8px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-family: "Roboto Mono", monospace;
+}
+
+::-webkit-calender-picker-indicator{
+    background-color: #f1f1f1;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.datepicker{
+    background-color: #f1f1f1;
+    padding: 5px;
+}
+
+.room-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    width: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.room-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+.room-box h4 {
+    margin: 10px 0;
+}

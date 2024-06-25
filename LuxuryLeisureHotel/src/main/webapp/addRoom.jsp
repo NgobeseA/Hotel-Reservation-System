@@ -4,7 +4,9 @@
     Author     : T440
 --%>
 
-<%@page import="co.za.andile.luxuryleisurehotel.room.model.RoomType"%>
+
+<%@page import="co.za.andile.luxuryleisurehotel.room.roomtype.model.RoomType"%>
+<%@page import="java.util.List"%>
 <%@page import="co.za.andile.luxuryleisurehotel.users.model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,35 +14,61 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Add Room</title>
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/addRoom.css">
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
-        <% 
+        <div class="addRoom">
+            <div class="contianer">
+               
+               <% 
             User user = (User) request.getSession(false).getAttribute("user");
-            RoomType[] roomtype = (RoomType[]) request.getAttribute("enum");
-            if(!user.isAdmin()){
+            List<RoomType> roomtypes = (List<RoomType>) request.getSession(false).getAttribute("RoomTypes");
+            String message = (String) request.getAttribute("AddTypeMessage");
+            String roomMessage = (String) request.getAttribute("AddRoomMessage");
+            if(user != null && user.isAdmin()){
             %>
-            <jsp:include page="unauthorized.jsp" />
-            <%} else {%>
-            <h1>add Room</h1>
-        <form action="RoomController" method="post">
-            Room type: <select id="roomType" name="roomType">
-                <option>select</option>
-                <% for (RoomType rt : roomtype) {%>
-                <option value="<%= rt %>"><%= rt %></option>
+            <div class="container">
+                <div class="addRoom">
+                    <h3>Add Room</h3> 
                     
-                <%}%>
-            </select><br>
-            Picture: <input name="picture" type="text"><br>
-            description: <input name="description" type="text"><br>
-            Location: <input name="location" type="text"><br>
-            Rates: <input name="rates" type="number"><br>
-            Rating: <input name="rating" type="number"><br>
-            Available: <input name="available" type="checkbox"><br>
-            Room Number: <input name="room_number" type="text"></br>
-            <input name="submit" type="submit" value="createRoom">
+                    <form action="RoomController" method="post">
+                        <div class="room-type">
+                             <% if(roomMessage != null){%><h4><%= roomMessage %></h4><%}%>
+                            Room type: <select id="roomType" name="roomType">
+                                <option>select</option>
+                                <% for (RoomType rt : roomtypes) {%>
+                                <option value="<%= rt.getId() %>"> <%= rt.getRoom_type() %> </option>
+                                <%}%>
+                                </select><br>
+                        </div>
+
+                                
+                                <div class="name">Price per night: <input name="rates" type="number"></div>
+                                <div class="name">Room Number: <input name="room_number" type="text"></div>
+                                <div class="name">Available: <input name="available" type="checkbox"></div>
+                                <div class="name">Location: <input name="location" type="text"></div>
+                        <div class="submit"><input id="form_button" name="submit" type="submit" value="createRoom"></div>
+
+                    </form>
+                </div>
+                <div class="addRoomType">
+                    <h3>Add Room Type</h3>
+                    <form action="RoomTypeController" method="post">
+                        <input placeholder="Room Type" name="type" type="text">
+                        <input placeholder="Picture URL" name="picture_url" type="text">
+                        <% if(message != null){%>
+                        <p><%= message %></p><%}%>
+                        <input name="submit" type="submit" value="addRoomType">
+                    </form>
+                </div>
+            </div>
+                        
+            <%} else {%>
+            <jsp:include page="unauthorized.jsp" />
+            <%} %> 
+            </div>
             
-        </form>
-            <%}%>
+        </div>
     </body>
 </html>

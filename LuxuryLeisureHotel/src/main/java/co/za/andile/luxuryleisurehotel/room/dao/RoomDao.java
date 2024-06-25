@@ -6,6 +6,7 @@
 package co.za.andile.luxuryleisurehotel.room.dao;
 
 import co.za.andile.luxuryleisurehotel.room.model.Room;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -16,6 +17,6 @@ public interface RoomDao {
     List<Room> getAllRooms();
     boolean addRoom(Room room);
     boolean editRoom(Room room);
-    Room getRoom(int id);
-    List<Room> getAvailableRooms();
+    boolean updateRoomAvailability(int id, boolean available);
+    List<Room> getAvailableRooms(LocalDateTime check_in, LocalDateTime check_out);
 }
