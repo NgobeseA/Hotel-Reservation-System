@@ -12,8 +12,9 @@ import co.za.andile.luxuryleisurehotel.users.model.User;
  * @author T440
  */
 public interface UserDao {
-    boolean addUser(User user);
+    boolean addUser(User user, String password);
     User getUser(String email, String password);
     void duplicateUser(String email) throws DuplicateUserException;
     boolean verifyToken(String token);
+    boolean editUser(User user);
 }

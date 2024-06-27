@@ -1,0 +1,153 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20 Jun 2024, 10:25:50
+    Author     : T440
+*/
+
+
+.bg-img{
+    background-image: url(../images/background.jpg);
+    min-height: 450px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.submit-btn{
+    background: #92c7eb;
+    padding: 20px;
+    cursor: pointer;
+}
+
+input[type='date'], [type='time']{
+
+    border: 1px solid #122293;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.calender{
+   margin: 20px 15px;
+   background-color: red;
+}
+
+.center{
+    justify-content: center;
+    align-items: center;
+    
+}
+
+section{
+    padding: 100px 200px;
+}
+
+.wall{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.wall:before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.wall .content{
+    z-index: 888;
+    color: red;
+    width: 70%;
+    margin-top: 50px;
+    display: none;
+}
+
+.wall .content .active{
+    display: block;
+}
+
+.wall .content h3{
+    font-size: 4em;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    line-height: 75px;
+    margin-bottom: 40px;
+}
+
+.home content p{
+    margin-bottom: 65px;
+}
+.wall .content a{
+    background: #92c7eb;
+    padding: 15px 35px;
+    color: #red;
+    font-size: 1.1em;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 2px;
+}
+
+.wall img{
+    z-index: 000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slider-navigation{
+    z-index: 888;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(80px);
+    margin-bottom: 12px;
+}
+
+.slider-navigation .nav-btn{
+    width: 12px;
+    height: 12px;
+    background: #red;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 2px rbga(255, 255, 255, 0.5);
+    transition: 0.3s ease;
+}
+
+.slider-navigation .nav-btn .active{
+    background: black;
+}
+
+.slider-navigation .nav-btn:not(:last-child){
+    margin-right: 20px;
+}
+
+.slider-navigation .nav-btn:hover{
+    transform: scale(1.2);
+}
+
+.img-slide{
+    position: absolute;
+    width: 100%;
+    clip-path: circle(0% at 0 50%);
+}
+
+.img-slide .active{
+    clip-path: circle(150% at 0 50%);
+    transition: 2s ease;
+    transition-property: clip-path;
+}
