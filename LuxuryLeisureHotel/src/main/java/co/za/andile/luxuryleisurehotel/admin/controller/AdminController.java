@@ -5,10 +5,11 @@
  */
 package co.za.andile.luxuryleisurehotel.admin.controller;
 
+import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
 import co.za.andile.luxuryleisurehotel.admin.dao.AdminDaoImpl;
 import co.za.andile.luxuryleisurehotel.admin.service.AdminService;
 import co.za.andile.luxuryleisurehotel.admin.service.AdminServiceImpl;
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+
 import co.za.andile.luxuryleisurehotel.reservations.dao.ReservationDaoImpl;
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.reservations.service.ReservationService;
@@ -35,10 +36,10 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "AdminController", urlPatterns = {"/AdminController"})
 public class AdminController extends HttpServlet {
-    private final AdminService adminService = new AdminServiceImpl(new AdminDaoImpl(new DBConnection().connect()));
-   private final AdminService roomAdminService = new AdminServiceImpl(new RoomDaoImpl(new DBConnection().connect()));
-   private final ReservationService reservationService = new ReservationServiceImpl(new ReservationDaoImpl(new DBConnection().connect()));
-   private final UserService userService = new UserServiceImpl(new UserDaoImpl(new DBConnection().connect())); 
+    private final AdminService adminService = new AdminServiceImpl(new AdminDaoImpl(new Connect().connectToDB()));
+   private final AdminService roomAdminService = new AdminServiceImpl(new RoomDaoImpl(new Connect().connectToDB()));
+   private final ReservationService reservationService = new ReservationServiceImpl(new ReservationDaoImpl(new Connect().connectToDB()));
+   private final UserService userService = new UserServiceImpl(new UserDaoImpl(new Connect().connectToDB())); 
    
    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

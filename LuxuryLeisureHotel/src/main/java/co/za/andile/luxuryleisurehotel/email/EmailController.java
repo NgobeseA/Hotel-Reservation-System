@@ -13,10 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.simplejavamail.api.email.Email;
-import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.api.mailer.Mailer;
-import org.simplejavamail.mailer.MailerBuilder;
 import org.simplejavamail.api.mailer.config.TransportStrategy;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.MailerBuilder;
+//import org.simplejavamail.api.email.Email;
+//import org.simplejavamail.email.EmailBuilder;
+//import org.simplejavamail.api.mailer.Mailer;
+//import org.simplejavamail.mailer.MailerBuilder;
+//import org.simplejavamail.api.mailer.config.TransportStrategy;
 
 
 @WebServlet(name = "EmailController", urlPatterns = {"/EmailController"})
@@ -43,7 +48,7 @@ public class EmailController extends HttpServlet {
 
             // Configure the mailer
             Mailer mailer = MailerBuilder
-                    .withSMTPServer("smtp.gmail.com", 2525, "andilekngobese@gmail.com", "isni ridl rhrw fcxs")
+                    .withSMTPServer("smtp.gmail.com", 587, "andilekngobese@gmail.com", "isni ridl rhrw fcxs")
                     .withTransportStrategy(TransportStrategy.SMTP_TLS)
                     .buildMailer();
 

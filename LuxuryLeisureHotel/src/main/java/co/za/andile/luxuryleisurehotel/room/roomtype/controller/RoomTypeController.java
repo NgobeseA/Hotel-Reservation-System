@@ -5,7 +5,8 @@
  */
 package co.za.andile.luxuryleisurehotel.room.roomtype.controller;
 
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
+//import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.room.roomtype.dao.RoomTypeDaoImpl;
 import co.za.andile.luxuryleisurehotel.room.roomtype.model.RoomType;
 import co.za.andile.luxuryleisurehotel.room.roomtype.service.RoomTypeService;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "RoomTypeController", urlPatterns = {"/RoomTypeController"})
 public class RoomTypeController extends HttpServlet {
-    private RoomTypeService roomTypeService = new RoomTypeServiceImpl(new RoomTypeDaoImpl(new DBConnection().connect()));
+    private RoomTypeService roomTypeService = new RoomTypeServiceImpl(new RoomTypeDaoImpl(new Connect().connectToDB()));
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
@@ -50,7 +51,7 @@ public class RoomTypeController extends HttpServlet {
                 if(roomTypeService.addRoomType(new RoomType(
                         request.getParameter("type"),
                         request.getParameter("picture_url"),
-                        Double.parseDouble(request.getParameter("price_per_night"))
+                        Double.parseDouble(request.getParameter("price"))
                 ))){
                     request.setAttribute("AddTypeMessage", "type added succesfully");
                     

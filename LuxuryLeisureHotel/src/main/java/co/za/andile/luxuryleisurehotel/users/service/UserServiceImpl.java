@@ -53,10 +53,10 @@ public class UserServiceImpl implements UserService{
     }
     
     @Override
-    public boolean createUser(String name, String surname, String email, String contact, String password, boolean admin){
+    public boolean createUser(String name, String surname, String email, String contact, String password, boolean admin) throws DuplicateUserException, InvalidDataException{
         boolean result = false;
         
-        try {
+        
             InvalidData.validateData(name, surname, email, contact, password);
             userDao.duplicateUser(email);
             //String token = emailService.generateEmailToken(email);
@@ -78,11 +78,7 @@ public class UserServiceImpl implements UserService{
                result= userDao.addUser(user, userPassword);
             
             
-        } catch (InvalidDataException ex) {
-            
-        } catch (DuplicateUserException ex) {
-           
-        }
+        
         
         return result;
     }

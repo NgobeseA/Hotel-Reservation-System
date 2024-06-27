@@ -16,38 +16,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Reserve a Room</title>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/booking.css">
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const today = new Date();
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-
-                const todayStr = today.toISOString().split('T')[0];
-                const tomorrowStr = tomorrow.toISOString().split('T')[0];
-
-                const checkInInput = document.getElementById('checkIn');
-                const checkOutInput = document.getElementById('checkOut');
-
-                checkInInput.setAttribute('min', todayStr);
-                checkOutInput.setAttribute('min', todayStr);
-
-                checkInInput.value = todayStr;
-                checkOutInput.value = tomorrowStr;
-
-                checkInInput.addEventListener('change', function() {
-                    const checkInDate = new Date(checkInInput.value);
-                    checkInDate.setDate(checkInDate.getDate() + 1);
-                    checkOutInput.setAttribute('min', checkInDate.toISOString().split('T')[0]);
-                });
-
-                document.getElementById('reservationForm').addEventListener('submit', function(event) {
-                    if (new Date(checkInInput.value) >= new Date(checkOutInput.value)) {
-                        alert('Check-out date must be after the check-in date.');
-                        event.preventDefault();
-                    }
-                });
-            });
-        </script>
+        
     </head>
     <body>
         <% User user = (User) request.getSession(false).getAttribute("user");
@@ -79,6 +48,7 @@
                         <div class="room-box">
                             <img src="./images/<%= room.getPicture_url() %>" alt="Room Picture">
                             <h4>Room Type: <%= room.getRoom_type() %></h4>
+                            <p>Per night: R <%=room.getPrice_per_night()%></p>
                              <input type="radio" name="roomtypeId" value="<%= room.getId() %>"> Select
                         </div>
                     
@@ -108,8 +78,11 @@
                                />
                     </div>
                     <input type="hidden" name="submit" value="reserveRoom">
+                    <p>Total Amount: R <span id="totalAmount">0.0</span></p></p>
                 <button type="submit">Reserve Now</button>
                 </form>   
         </section>
+                    
+        <script src="<%= request.getContextPath() %>/js/booking.js"></script>
     </body>
 </html>

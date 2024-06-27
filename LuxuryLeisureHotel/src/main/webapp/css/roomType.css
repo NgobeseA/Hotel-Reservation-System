@@ -23,8 +23,7 @@ and open the template in the editor.
 }
 
 .img-pic {
-    flex: 1;
-    /* Adjust dimensions and styles for the image container */
+
     max-width: 500px;
     
     height: 100%;

@@ -16,13 +16,16 @@
     <body>
         <%
                 User user = (User) request.getSession(false).getAttribute("user");
+                String message = (String) request.getAttribute("RegisterMessage");
             %>
         <jsp:include page="navbar.jsp" />
         <section id="container" class="container">
             
             <div class="form-container sign-up-container">
                 <h3>Sign Up</h3>
-
+                <% if(message != null){%>
+                <h5 style="color: red;"><%=message%></h5>
+                <%}%>
                 <form action="UserController" method="post">
                     <div class="infield">
                         <input placeholder="name" name="name" type="text" required=""/>

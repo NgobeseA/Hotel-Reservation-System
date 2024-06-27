@@ -79,8 +79,7 @@
             </div>
             <%    } %>
             
-            <%}
-}%>
+            <%}%>
             </div>
             <% if(historyReservation != null && !historyReservation.isEmpty()){%>
             <div>
@@ -116,6 +115,6 @@
                     </table>
                 </div>
             </div>
-            <%}%>
+            <%}}%>
     </body>
 </html>

@@ -5,7 +5,8 @@
  */
 package co.za.andile.luxuryleisurehotel.home;
 
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
+//import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.room.dao.RoomDaoImpl;
 import co.za.andile.luxuryleisurehotel.room.model.Room;
 import co.za.andile.luxuryleisurehotel.room.roomtype.dao.RoomTypeDaoImpl;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "home", urlPatterns = {"/home"})
 public class home extends HttpServlet {
-    private RoomService roomService = new RoomServiceImpl(new RoomTypeDaoImpl(new DBConnection().connect()));
+    private RoomService roomService = new RoomServiceImpl(new RoomTypeDaoImpl(new Connect().connectToDB()));
   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

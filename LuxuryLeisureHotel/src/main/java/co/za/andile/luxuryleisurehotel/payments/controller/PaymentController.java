@@ -5,7 +5,8 @@
  */
 package co.za.andile.luxuryleisurehotel.payments.controller;
 
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
+//import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.invoice.Invoice;
 import co.za.andile.luxuryleisurehotel.payments.dao.PaymentDaoImpl;
 import co.za.andile.luxuryleisurehotel.payments.model.Payment;
@@ -29,8 +30,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "PaymentController", urlPatterns = {"/PaymentController"})
 public class PaymentController extends HttpServlet {
-    private PaymentService paymentService = new PaymentServiceImpl(new ReservationDaoImpl(new DBConnection().connect()));
-    private final PaymentService paymentDaoService = new PaymentServiceImpl(new PaymentDaoImpl(new DBConnection().connect()));
+    private PaymentService paymentService = new PaymentServiceImpl(new ReservationDaoImpl(new Connect().connectToDB()));
+    private final PaymentService paymentDaoService = new PaymentServiceImpl(new PaymentDaoImpl(new Connect().connectToDB()));
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

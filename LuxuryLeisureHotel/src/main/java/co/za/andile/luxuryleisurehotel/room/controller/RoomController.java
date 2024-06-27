@@ -5,7 +5,8 @@
  */
 package co.za.andile.luxuryleisurehotel.room.controller;
 
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
+//import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.room.dao.RoomDaoImpl;
 import co.za.andile.luxuryleisurehotel.room.model.Room;
 import co.za.andile.luxuryleisurehotel.room.roomexception.RoomExistException;
@@ -32,8 +33,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "RoomController", urlPatterns = {"/RoomController"})
 public class RoomController extends HttpServlet {
-    RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new DBConnection().connect()));
-    RoomService roomTypeService = new RoomServiceImpl(new RoomTypeDaoImpl(new DBConnection().connect()));
+    RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new Connect().connectToDB()));
+    RoomService roomTypeService = new RoomServiceImpl(new RoomTypeDaoImpl(new Connect().connectToDB()));
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        //List<Room> rooms = roomService.getAllAvailableRooms();

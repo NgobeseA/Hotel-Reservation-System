@@ -81,6 +81,7 @@
                     <form action="RoomTypeController" method="post">
                         <input placeholder="Room Type" name="type" type="text">
                         <input placeholder="Picture URL" name="picture_url" type="text">
+                        <input placeholder="Price" name="price" type="number">
                         <% if(message != null){%>
                         <p><%= message %></p><%}%>
                         <input name="submit" type="submit" value="addRoomType">

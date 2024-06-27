@@ -67,7 +67,7 @@ public class ReservationDaoImpl implements ReservationDao{
             String sql = "SELECT b.reservation_id, b.created_on, b.check_in, b.check_out, b.status, "
                      + "u.id as id, u.name as name, u.surname as surname, u.email as email, u.contact as contact, u.admin as admin, "
                      + "r.room_id as room_id, r.price_per_night as price_per_night, r.room_number as room_number, r.available as available, r.location as location, "
-                     + "rt.roomtype_id as roomtype_id, rt.type as type, rt.picture_url as picture_url "
+                     + "rt.roomtype_id as roomtype_id, rt.type as type, rt.picture_url as picture_url, rt.price "
                      + "FROM booking b "
                      + "JOIN users u ON b.user_id = u.id "
                      + "JOIN rooms r ON b.room_id = r.room_id "
@@ -95,6 +95,7 @@ public class ReservationDaoImpl implements ReservationDao{
                         roomType.setId(rs.getInt("roomtype_id"));
                         roomType.setRoom_type(rs.getString("type"));
                         roomType.setPicture_url(rs.getString("picture_url"));
+                        roomType.setPrice_per_night(rs.getDouble("price"));
                         
                         // Create Room object
                         Room room = new Room();
@@ -133,7 +134,7 @@ public class ReservationDaoImpl implements ReservationDao{
             String sql = "SELECT b.reservation_id, b.created_on, b.check_in, b.check_out, b.status, "
                      + "u.id as id, u.name as name, u.surname as surname, u.email as email, u.contact as contact, u.admin as admin, "
                      + "r.room_id as room_id, r.price_per_night as price_per_night, r.room_number as room_number, r.available as available, r.location as location, "
-                     + "rt.roomtype_id as roomtype_id, rt.type as type, rt.picture_url as picture_url "
+                     + "rt.roomtype_id as roomtype_id, rt.type as type, rt.picture_url as picture_url, rt.price "
                      + "FROM booking b "
                      + "JOIN users u ON b.user_id = u.id "
                      + "JOIN rooms r ON b.room_id = r.room_id "
@@ -159,6 +160,7 @@ public class ReservationDaoImpl implements ReservationDao{
                         roomType.setId(rs.getInt("roomtype_id"));
                         roomType.setRoom_type(rs.getString("type"));
                         roomType.setPicture_url(rs.getString("picture_url"));
+                        roomType.setPrice_per_night(rs.getDouble("price"));
                         
                         // Create Room object
                         Room room = new Room();

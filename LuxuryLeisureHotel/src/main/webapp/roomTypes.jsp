@@ -27,11 +27,11 @@
                 <div class="row">
                     <div class="img-pic">
                         
-                        <img src="<%= request.getContextPath() %>/images/<%= rt.getPicture_url() %>" >
+                        <img src="./images/<%= rt.getPicture_url() %>" >
                     </div>
                     <div class="right">
                     <h4><%=rt.getRoom_type() %></h4>
-                    <p><%=rt.getPrice_per_night()%></p>
+                    <p><%=rt.getPrice_per_night() %></p>
                     </div>
                 </div>
                     <%}%>

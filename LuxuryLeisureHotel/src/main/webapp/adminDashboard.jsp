@@ -103,7 +103,7 @@
                                 <td><%=room.getRoomNumber()%></td>
                                 <td><%=room.getRoomType()%></td>
                                 <td><%=room.getLocation()%></td>
-                                <td><%=room.getRates()%></td>
+                                <td>R <%=room.getRoomType().getPrice_per_night() %></td>
                                 <td>
                                     <form action="RoomController" method="get" style="display:inline;">
                                         <input type="hidden" name="roomId" value="<%= room.getId() %>">

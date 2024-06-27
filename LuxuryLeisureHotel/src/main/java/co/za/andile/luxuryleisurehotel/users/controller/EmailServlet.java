@@ -17,12 +17,12 @@ import java.io.IOException;
 public class EmailServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String to = request.getParameter("to");
         //String subject = request.getParameter("subject");
         //String content = request.getParameter("content");
 
-        EmailSender.sendEmail(to);
+        EmailSender.sendEmail("phycoandile@gmail.com");
 
         response.getWriter().println("Email sent successfully.");
     }

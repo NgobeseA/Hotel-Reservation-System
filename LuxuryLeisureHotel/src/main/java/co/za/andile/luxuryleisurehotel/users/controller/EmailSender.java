@@ -20,7 +20,7 @@ public class EmailSender {
         // Gmail SMTP server address
         String host = "smtp.gmail.com";
         final String user = "andilekngobese@gmail.com"; // change accordingly
-        final String password = "isniridlrhrwfcxs"; // change accordingly
+        final String password = "isni ridl rhrw fcxs"; // change accordingly
 
         // Get the session object
         Properties props = new Properties();
@@ -30,6 +30,8 @@ public class EmailSender {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         props.put("mail.debug", "true");
+        props.put("mail.smtp.user", user);
+        props.put("mail.smtp.password", password);
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {

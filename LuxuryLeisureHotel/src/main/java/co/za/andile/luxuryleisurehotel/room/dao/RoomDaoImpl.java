@@ -35,7 +35,7 @@ public class RoomDaoImpl implements RoomDao{
 
         if (connection != null) {
             String sql = "SELECT r.room_id, r.price_per_night, r.room_number, r.available, r.location, " +
-                         "t.roomtype_id as roomtype_id, t.type as type, t.picture_url, t.price_per_night " +
+                         "t.roomtype_id as roomtype_id, t.type as type, t.picture_url, t.price " +
                          "FROM rooms r " +
                          "JOIN roomtypes t ON r.roomtype_id = t.roomtype_id";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -46,7 +46,7 @@ public class RoomDaoImpl implements RoomDao{
                         roomType.setId(resultSet.getInt("roomtype_id"));
                         roomType.setRoom_type(resultSet.getString("type"));
                         roomType.setPicture_url(resultSet.getString("picture_url"));
-                        roomType.setPrice_per_night(resultSet.getDouble("price_per_night"));
+                        roomType.setPrice_per_night(resultSet.getDouble("price"));
 
                         // Create Room object
                         Room room = new Room();
@@ -117,7 +117,7 @@ public class RoomDaoImpl implements RoomDao{
         */
         if (connection != null) {
             String sql = "SELECT r.room_id, r.price_per_night, r.room_number, r.available, r.location, "
-                       + "rt.roomtype_id as roomtype_id, rt.type as room_type, rt.picture_url, rt.price_per_night "
+                       + "rt.roomtype_id as roomtype_id, rt.type as room_type, rt.picture_url, rt.price "
                        + "FROM rooms r "
                        + "JOIN roomtypes rt ON r.roomtype_id = rt.roomtype_id "
                        + "WHERE r.room_id NOT IN (SELECT b.room_id FROM booking b "

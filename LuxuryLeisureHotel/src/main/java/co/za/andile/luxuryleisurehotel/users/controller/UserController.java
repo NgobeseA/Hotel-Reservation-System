@@ -6,7 +6,9 @@
 package co.za.andile.luxuryleisurehotel.users.controller;
 
 import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+import co.za.andile.luxuryleisurehotel.exceptions.DuplicateUserException;
+import co.za.andile.luxuryleisurehotel.exceptions.InvalidDataException;
+//import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.reservations.dao.ReservationDaoImpl;
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.reservations.service.ReservationService;
@@ -43,14 +45,14 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
 
-    private final RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new DBConnection().connect()));
+    private final RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new Connect().connectToDB()));
     private final UserService userService = new UserServiceImpl(
-            new UserDaoImpl(new DBConnection().connect()),
+            new UserDaoImpl(new Connect().connectToDB()),
             new EmailServiceImpl(),
             new UserEncryptServiceImpl()
     );
-    private final ReservationService reservationService = new ReservationServiceImpl(new ReservationDaoImpl(new DBConnection().connect()));
-    private final RoomService roomTService = new RoomServiceImpl(new RoomTypeDaoImpl(new DBConnection().connect()));
+    private final ReservationService reservationService = new ReservationServiceImpl(new ReservationDaoImpl(new Connect().connectToDB()));
+    private final RoomService roomTService = new RoomServiceImpl(new RoomTypeDaoImpl(new Connect().connectToDB()));
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -86,20 +88,26 @@ public class UserController extends HttpServlet {
         switch (request.getParameter("submit")) {
             case "register":
                 boolean isAdmin = request.getParameter("admin") != null;
-                boolean result = userService.createUser(
-                        request.getParameter("name"),
-                        request.getParameter("surname"),
-                        request.getParameter("email"),
-                        request.getParameter("contact"),
-                        request.getParameter("password"), isAdmin);
+                boolean result;
+                String message = null;
+                try {
+                    result = userService.createUser(
+                            request.getParameter("name"),
+                            request.getParameter("surname"),
+                            request.getParameter("email"),
+                            request.getParameter("contact"),
+                            request.getParameter("password"), isAdmin);
 
-                if (result) {
-                    //request.setAttribute("message", message);
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("message", "failed to register");
-                    request.getRequestDispatcher("register.jsp").forward(request, response);
+                    if (result)
+                        request.getRequestDispatcher("login.jsp").forward(request, response);
+                } catch (DuplicateUserException ex) {
+                    message = "Email already taken";
+                } catch (InvalidDataException ex) {
+                    message= "please fill all fields";
                 }
+                    request.setAttribute("RegisterMessage", message);
+                    request.getRequestDispatcher("register.jsp").forward(request, response);
+               
                 break;
             case "login":
                 User user = userService.login(

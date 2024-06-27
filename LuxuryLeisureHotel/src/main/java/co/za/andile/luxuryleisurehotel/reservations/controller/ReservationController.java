@@ -5,7 +5,8 @@
  */
 package co.za.andile.luxuryleisurehotel.reservations.controller;
 
-import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
+import co.za.andile.luxuryleisurehotel.BDconnection.Connect;
+//import co.za.andile.luxuryleisurehotel.dbconnect.DBConnection;
 import co.za.andile.luxuryleisurehotel.reservations.dao.ReservationDaoImpl;
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.reservations.model.Status;
@@ -45,10 +46,10 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "ReservationController", urlPatterns = {"/ReservationController"})
 public class ReservationController extends HttpServlet {
 
-    private final ReservationService reservationService = new ReservationServiceImpl(new ReservationDaoImpl(new DBConnection().connect()));
-    private final ReservationService reservationServiceR = new ReservationServiceImpl(new RoomServiceImpl(new RoomDaoImpl(new DBConnection().connect())));
+    private final ReservationService reservationService = new ReservationServiceImpl(new ReservationDaoImpl(new Connect().connectToDB()));
+    private final ReservationService reservationServiceR = new ReservationServiceImpl(new RoomServiceImpl(new RoomDaoImpl(new Connect().connectToDB())));
 
-    private final RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new DBConnection().connect()));
+    private final RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new Connect().connectToDB()));
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
