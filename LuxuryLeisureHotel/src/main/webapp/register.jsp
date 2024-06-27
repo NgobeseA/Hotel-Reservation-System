@@ -25,14 +25,17 @@
 
                 <form action="UserController" method="post">
                     <div class="infield">
-                        <input placeholder="name" name="name" type="text"/>
+                        <input placeholder="name" name="name" type="text" required=""/>
                     </div>
-                    <div class="infield"><input placeholder="surname" name="surname" type="text"> </div>
-                    <div class="infield"> <input placeholder="email" name="email" type="email"> </div>
-                    <div class="infield"> <input placeholder="contact number" name="contact" type="number"> </div>
-                    <div class="infield"> <input placeholder="password" name="password" type="password"></div>
+                    <div class="infield"><input placeholder="surname" name="surname" type="text" required> </div>
+                    <div class="infield"> <input placeholder="email" name="email" type="email" required> </div>
+                    <div class="infield"> <input placeholder="contact number" name="contact" type="number" required=""> </div>
+                    <div class="infield"> <input placeholder="password" name="password" type="password" required=""></div>
+                    <% if(user != null && user.isAdmin()){%>
                     <div class="infield">admin: <input name="admin" type="checkbox">  </div>
-                    <input class="button" name="submit" type="submit" value="register">
+                    <%}%>
+                    <input name="submit" type="hidden" value="register">
+                    <button  type="sumit">Register</button>
                 </form>
             </div>
             <div class="overlay-container">
@@ -40,7 +43,10 @@
                     <div class="overlay-panel overlay-left">
                         <h3>Wola, Good to see you!</h3>
                         <p>Keep connected with us where good times are in our place</p>
-                        <button>Sign In</button>
+                        <form action="UserController" method="get">
+                            <input name="submit" value="getLoginPage" type="hidden">
+                        <button  type="submit">Sign In</button>
+                        </form>
                     </div>
                 </div>
             </div>

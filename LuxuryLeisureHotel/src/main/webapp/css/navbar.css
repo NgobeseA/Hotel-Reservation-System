@@ -91,13 +91,13 @@ header .navbar-list li a{
 
  .user-circle {
     display: inline-block;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     background-color: #243855; /* Customize the color */
     border-radius: 50%;
     margin-left: 10px; /* Adjust spacing */
     text-align: center;
-    line-height: 30px;
+    line-height: 50px;
     color: #fff; /* Text color */
 }
 

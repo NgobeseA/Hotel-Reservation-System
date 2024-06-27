@@ -17,6 +17,7 @@ public interface RoomDao {
     List<Room> getAllRooms();
     boolean addRoom(Room room);
     boolean editRoom(Room room);
-    boolean updateRoomAvailability(int id, boolean available);
+    LocalDateTime findNextAvailableRoom(LocalDateTime check_out, int roomtypeId);
     List<Room> getAvailableRooms(LocalDateTime check_in, LocalDateTime check_out);
+    boolean removeRoom(int id);
 }

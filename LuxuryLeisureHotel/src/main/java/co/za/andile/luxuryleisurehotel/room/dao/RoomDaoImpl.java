@@ -35,7 +35,7 @@ public class RoomDaoImpl implements RoomDao{
 
         if (connection != null) {
             String sql = "SELECT r.room_id, r.price_per_night, r.room_number, r.available, r.location, " +
-                         "t.roomtype_id as roomtype_id, t.type as type, t.picture_url " +
+                         "t.roomtype_id as roomtype_id, t.type as type, t.picture_url, t.price_per_night " +
                          "FROM rooms r " +
                          "JOIN roomtypes t ON r.roomtype_id = t.roomtype_id";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -46,6 +46,7 @@ public class RoomDaoImpl implements RoomDao{
                         roomType.setId(resultSet.getInt("roomtype_id"));
                         roomType.setRoom_type(resultSet.getString("type"));
                         roomType.setPicture_url(resultSet.getString("picture_url"));
+                        roomType.setPrice_per_night(resultSet.getDouble("price_per_night"));
 
                         // Create Room object
                         Room room = new Room();
@@ -98,21 +99,7 @@ public class RoomDaoImpl implements RoomDao{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public boolean updateRoomAvailability(int id, boolean available) {
-        if(connection != null){
-            String sql = "UPDATE rooms SET available =? WHERE room_id = ?";
-            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-                preparedStatement.setBoolean(1, available);
-                preparedStatement.setInt(1, id);
-                
-                if(preparedStatement.executeUpdate() > 0) return true;
-            } catch (SQLException ex) {
-                Logger.getLogger(RoomDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return false;
-    }
+    
 
     @Override
     public List<Room> getAvailableRooms(LocalDateTime check_in, LocalDateTime check_out) {
@@ -130,7 +117,7 @@ public class RoomDaoImpl implements RoomDao{
         */
         if (connection != null) {
             String sql = "SELECT r.room_id, r.price_per_night, r.room_number, r.available, r.location, "
-                       + "rt.roomtype_id as roomtype_id, rt.type as room_type, rt.picture_url "
+                       + "rt.roomtype_id as roomtype_id, rt.type as room_type, rt.picture_url, rt.price_per_night "
                        + "FROM rooms r "
                        + "JOIN roomtypes rt ON r.roomtype_id = rt.roomtype_id "
                        + "WHERE r.room_id NOT IN (SELECT b.room_id FROM booking b "
@@ -150,6 +137,7 @@ public class RoomDaoImpl implements RoomDao{
                         roomType.setId(resultSet.getInt("roomtype_id"));
                         roomType.setRoom_type(resultSet.getString("room_type"));
                         roomType.setPicture_url(resultSet.getString("picture_url"));
+                        roomType.setPrice_per_night(resultSet.getDouble("price_per_night"));
 
                         // Create Room object
                         Room room = new Room();
@@ -170,6 +158,52 @@ public class RoomDaoImpl implements RoomDao{
         System.out.println(availableRooms.size());
         return availableRooms;
     } 
+
+    @Override
+    public boolean removeRoom(int id) {
+        if(connection != null){
+            String sql = "DELETE FROM rooms WHERE room_id = ?";
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setInt(1, id);
+                
+                if(preparedStatement.executeUpdate() > 0) return true;
+            } catch (SQLException ex) {
+                Logger.getLogger(RoomDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public LocalDateTime findNextAvailableRoom(LocalDateTime check_out, int roomtypeId) {
+        LocalDateTime nextAvailableDate = null;
+        if(connection != null){
+            String sql = "SELECT MIN(b.check_out) as next_available_date "
+                + "FROM booking b "
+                + "JOIN rooms r ON b.room_id = r.room_id "
+                + "JOIN roomtypes rt ON r.roomtype_id = rt.roomtype_id "
+                + "WHERE b.status != 'CANCELLED' "
+                + "AND b.check_out > ? "
+                + "AND rt.roomtype_id = ?";
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+                preparedStatement.setTimestamp(1, Timestamp.valueOf(check_out));
+                preparedStatement.setInt(2, roomtypeId);
+                
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Timestamp timestamp = resultSet.getTimestamp("next_available_date");
+                    System.out.println(timestamp);
+                    if (timestamp != null) {
+                        nextAvailableDate = timestamp.toLocalDateTime();
+                    }
+                }
+            }
+            } catch (SQLException ex) {
+                Logger.getLogger(RoomDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return nextAvailableDate;
+    }
 
    
 }

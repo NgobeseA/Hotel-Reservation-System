@@ -49,7 +49,8 @@ public class RoomTypeController extends HttpServlet {
             case "addRoomType":
                 if(roomTypeService.addRoomType(new RoomType(
                         request.getParameter("type"),
-                        request.getParameter("picture_url")
+                        request.getParameter("picture_url"),
+                        Double.parseDouble(request.getParameter("price_per_night"))
                 ))){
                     request.setAttribute("AddTypeMessage", "type added succesfully");
                     

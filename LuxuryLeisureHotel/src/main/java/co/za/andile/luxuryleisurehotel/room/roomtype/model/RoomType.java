@@ -19,10 +19,12 @@ public class RoomType {
     private int id;
     private String room_type;
     private String picture_url;
+    private double price_per_night;
 
-    public RoomType(String room_type, String picture_url) {
+    public RoomType(String room_type, String picture_url, double price_per_night) {
         this.room_type = room_type;
         this.picture_url = picture_url;
+        this.price_per_night = price_per_night;
     }
 
     @Override

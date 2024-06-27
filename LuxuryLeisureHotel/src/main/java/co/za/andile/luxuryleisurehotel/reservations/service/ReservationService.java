@@ -26,4 +26,5 @@ public interface ReservationService {
     List<Reservation> getUserReservation(String email);
     boolean checkInReservation(int reservation_id);
     boolean checkOutReservation(int reservation_id);
+    List<Reservation> getUpComingStayReservation(String user_email);
 }

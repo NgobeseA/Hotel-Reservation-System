@@ -32,7 +32,7 @@
                     initials.append(user.getSurname().charAt(0));%>
                     <li><a href="ReservationController?submit=getBookingPage">Booking</a></li>
                     <% if(!user.isAdmin()){%>
-                    <li><a href="UserController?submit=getDashboard">My Dashboard</a></li>
+                    <li><a href="ReservationController?submit=getUserDashboard">My Dashboard</a></li>
                     <%} else {%>
                     <li><a href="AdminController?submit=getDashboard">Admin Dashboard</a></li>
                     <%}%>

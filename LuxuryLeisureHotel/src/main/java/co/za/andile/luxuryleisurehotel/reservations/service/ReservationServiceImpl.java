@@ -88,5 +88,12 @@ public class ReservationServiceImpl implements ReservationService{
         return reservationDao.updateReservationStatus(reservation_id, Status.CHECKED_OUT);
     }
 
+    @Override
+    public List<Reservation> getUpComingStayReservation(String user_email) {
+        return getUserReservation(user_email).stream()
+                .filter(r -> r.getStatus() != Status.CANCELLED && r.getStatus() != Status.CHECKED_OUT)
+                .collect(Collectors.toList());
+    }
+
    
 }

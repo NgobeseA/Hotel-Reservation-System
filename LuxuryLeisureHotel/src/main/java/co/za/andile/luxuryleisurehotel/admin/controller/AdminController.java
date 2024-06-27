@@ -60,6 +60,10 @@ public class AdminController extends HttpServlet {
                 session.setAttribute("Allrooms", rooms);
                 session.setAttribute("reservedRooms", bookedRooms);
                 request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
+                break;
+            case "getUserService":
+                request.getRequestDispatcher("guestService.jsp").forward(request, response);
+                break;
         }
     }
 

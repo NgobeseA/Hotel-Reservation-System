@@ -13,6 +13,7 @@ import co.za.andile.luxuryleisurehotel.reservations.dao.ReservationDao;
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.users.dao.UserDao;
 import co.za.andile.luxuryleisurehotel.users.emailservice.EmailService;
+import co.za.andile.luxuryleisurehotel.users.emailservice.EmailServiceImpl;
 
 import co.za.andile.luxuryleisurehotel.users.encryption.UserEncryptionService;
 import co.za.andile.luxuryleisurehotel.users.model.User;
@@ -33,12 +34,12 @@ import java.util.List;
  */
 public class UserServiceImpl implements UserService{
     private UserDao userDao;
-    private EmailService emailService;
+    private EmailServiceImpl emailService;
     private UserEncryptionService userEncryptService;
     private ReservationDao reservationDao;
     
     
-    public UserServiceImpl(UserDao userDao, EmailService emailService, UserEncryptionService userEncryptService){
+    public UserServiceImpl(UserDao userDao, EmailServiceImpl emailService, UserEncryptionService userEncryptService){
         this.userDao = userDao;
         this.emailService= emailService;
         this.userEncryptService = userEncryptService;
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService{
         try {
             InvalidData.validateData(name, surname, email, contact, password);
             userDao.duplicateUser(email);
-            String token = emailService.generateEmailToken(email);
+            //String token = emailService.generateEmailToken(email);
             User user = new User();
             user.setName(name);
             user.setSurname(surname);
@@ -71,10 +72,11 @@ public class UserServiceImpl implements UserService{
             String userPassword = userEncryptService.hashingPassword(password);
             System.out.println("USER CREDENTIALS GOTTEN");
             System.out.println("\n\n\n sending data to email");
+            String subject = "Test";
+            String body="12345";
+            //emailService.sendRegistrationEmail(email, subject, body);
+               result= userDao.addUser(user, userPassword);
             
-            //if(emailService.sendVerificationEmail(name, surname, email, token)){
-                result= userDao.addUser(user, userPassword);
-            //}
             
         } catch (InvalidDataException ex) {
             
@@ -95,11 +97,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public String tokenVerification(String token) {
         return userDao.verifyToken(token) ? "token verified" : "Failed to to verify token";
-    }
-
-    @Override
-    public List<Reservation> getUserReservation(int userId) {
-        return reservationDao.getUserReservations(userId);
     }
 
     @Override

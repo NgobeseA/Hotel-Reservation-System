@@ -28,8 +28,10 @@
         <div class="container">
             <div class="header">
                 <h2>Admin Dashboard</h2>
-                
+                <form action="AdminController" method="get">
+                    <input name="submit" value="getUserService" type="hidden">
                 <button class="button" type="submit">Guest Service</button>
+                </form>
             </div>
             <div>
                 <div class="table">
@@ -84,7 +86,7 @@
                         <a href="RoomController?submit=getAddRoomPage">Add Room</a>
                     </div>
                     </div>
-                    <div>
+                    <div class="table">
                         <table>
                             <% 
                                 if(rooms != null && rooms.size() > 0){%>
@@ -110,7 +112,7 @@
                                     </form>
                                     <form action="RoomController" method="post" style="display:inline;">
                                         <input type="hidden" name="roomId" value="<%= room.getId() %>">
-                                        <input type="hidden" name="submit" value="Delete">
+                                        <input type="hidden" name="submit" value="removeRoom">
                                         <button class="button" type="submt">Delete</button>
                                     </form>
                                 </td>

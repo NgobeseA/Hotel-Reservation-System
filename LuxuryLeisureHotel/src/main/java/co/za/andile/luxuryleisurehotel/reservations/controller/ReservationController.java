@@ -14,6 +14,7 @@ import co.za.andile.luxuryleisurehotel.reservations.service.ReservationServiceIm
 import co.za.andile.luxuryleisurehotel.room.dao.RoomDaoImpl;
 import co.za.andile.luxuryleisurehotel.room.exception.NoRoomAvailableException;
 import co.za.andile.luxuryleisurehotel.room.model.Room;
+import co.za.andile.luxuryleisurehotel.room.service.RoomService;
 import co.za.andile.luxuryleisurehotel.room.service.RoomServiceImpl;
 import co.za.andile.luxuryleisurehotel.users.model.User;
 import java.io.IOException;
@@ -47,6 +48,8 @@ public class ReservationController extends HttpServlet {
     private final ReservationService reservationService = new ReservationServiceImpl(new ReservationDaoImpl(new DBConnection().connect()));
     private final ReservationService reservationServiceR = new ReservationServiceImpl(new RoomServiceImpl(new RoomDaoImpl(new DBConnection().connect())));
 
+    private final RoomService roomService = new RoomServiceImpl(new RoomDaoImpl(new DBConnection().connect()));
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -61,6 +64,12 @@ public class ReservationController extends HttpServlet {
         switch (request.getParameter("submit")) {
             case "getBookingPage":
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
+                break;
+            case "getUserReservationHistory":
+                handleGetUserReservationHistory(request, response);
+                break;
+            case "getUserDashboard":
+                handleGetUserDashboard(request, response);
                 break;
         }
 
@@ -115,42 +124,47 @@ public class ReservationController extends HttpServlet {
                 String message = null;
                 Room matchingRoom ;
                 HttpSession session = request.getSession(false);
+                int roomtypeId = Integer.parseInt(request.getParameter("roomtypeId"));
                 try{
                     check_in = convertToDateTime(request.getParameter("checkIn"), 14);
                     check_out = convertToDateTime(request.getParameter("checkOut"), 12);
 
-                    matchingRoom = reservationServiceR.getRoomFromRoomType(
-                            Integer.parseInt(request.getParameter("roomtypeId")),
-                            check_in,
-                            check_out);
-
-
-                    if (reservationService.makeReservation(new Reservation(
-                            (User) session.getAttribute("user"),
-                            matchingRoom,
-                            check_in,
-                            check_out,
-                            Status.PENDING,
-                            request.getParameter("mealtype"),
-                            request.getParameter("dietary")
-                    ))) {
-                        //if (reservationServiceR.editRoomStatus(matchingRoom.getId())) {
-                        request.getRequestDispatcher("userDashboard.jsp").forward(request, response);
-                        //}
-                    } else {
-                        message = "failed to register";
+                    
+                    try {
+                        matchingRoom = reservationServiceR.getRoomFromRoomType(
+                                roomtypeId,
+                                check_in,
+                                check_out);
+                        
+                        if (reservationService.makeReservation(new Reservation(
+                                (User) session.getAttribute("user"),
+                                matchingRoom,
+                                check_in,
+                                check_out,
+                                Status.PENDING,
+                                request.getParameter("mealtype"),
+                                request.getParameter("dietary")
+                        ))) {
+                            //if (reservationServiceR.editRoomStatus(matchingRoom.getId())) {
+                            request.getRequestDispatcher("userDashboard.jsp").forward(request, response);
+                            //}
+                        } else {
+                            message = "failed to register";
+                        }
+                    } catch (NoRoomAvailableException ex) { 
+                        
+                        message = "No rooms available of this type at the moment, they will be available on the " + roomService.getNextAvailableDate(check_out, roomtypeId).toString();
                     }
+                    
+
+                    
                 } catch (ParseException ex) {
                     message = "Please contact the admin, internal server error";
-                } catch (NoRoomAvailableException ex) {
-                    message = ex.getMessage();
-                }
+                } 
                 request.setAttribute("message", message);
                 request.getRequestDispatcher("booking.jsp").forward(request, response);
 
-            } catch (ServletException ex) {
-            Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+            } catch (ServletException | IOException ex) {
             Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -166,9 +180,7 @@ public class ReservationController extends HttpServlet {
 
                 session.setAttribute("reservedRooms", bookedRooms);
                 request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
-            } catch (ServletException ex) {
-                Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (ServletException | IOException ex) {
                 Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -193,9 +205,7 @@ public class ReservationController extends HttpServlet {
         
         try {
             request.getRequestDispatcher("guestService.jsp").forward(request, response);
-        } catch (ServletException ex) {
-            Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ServletException | IOException ex) {
             Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -213,9 +223,7 @@ public class ReservationController extends HttpServlet {
         
         try {
             request.getRequestDispatcher("guestService.jsp").forward(request, response);
-        } catch (ServletException ex) {
-            Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ServletException | IOException ex) {
             Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -233,9 +241,33 @@ public class ReservationController extends HttpServlet {
         
         try {
             request.getRequestDispatcher("guestService.jsp").forward(request, response);
-        } catch (ServletException ex) {
+        } catch (ServletException | IOException ex) {
             Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        }
+    }
+    
+    private void handleGetUserDashboard(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        List<Reservation> upComing = reservationService.getUpComingStayReservation(user.getEmail());
+        session.setAttribute("UpComing", upComing);
+        
+        try {
+            request.getRequestDispatcher("userDashboard.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void handleGetUserReservationHistory(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        
+        List<Reservation> reservationHistory = reservationService.getUserReservation(user.getEmail());
+        request.setAttribute("UserReservationHistory", reservationHistory);
+        
+        try {
+            request.getRequestDispatcher("userDashboard.jsp").forward(request, response);
+        } catch (ServletException | IOException ex) {
             Logger.getLogger(ReservationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -40,7 +40,7 @@ body {
 .card{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 16px;
-    text-align: center;
+    text-align: left;
     background-color: #f1f1f1;
 }
 
@@ -51,7 +51,60 @@ button{
     color: #fff;
     font-size: 12px;
     font-weight: bold;
-    padding: 12px 45px;
+    padding: 12px 15px;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+.circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: lightgray;
+    z-index: -1;
+}
+.circle.active {
+    background-color: #243855;
+    color: white;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.button{
+    padding: 8px 16px;
+    background-color: #243855;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    text-transform: uppercase;
+}
+
+.header .button a{
+    text-decoration: none;
+    color: #fff;
 }

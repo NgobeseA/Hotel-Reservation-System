@@ -24,6 +24,7 @@ public interface RoomService {
     boolean editRoom(int id);
     List<RoomType> getRoomTypes();
     RoomType getRoomType(int id);
-    boolean  editRoomAvailabity(int room_id, boolean available);
     Room getRoomById(int room_id);
+    boolean removeRoom(int room_id);
+    LocalDateTime getNextAvailableDate(LocalDateTime check_out, int roomtype_id);
 }

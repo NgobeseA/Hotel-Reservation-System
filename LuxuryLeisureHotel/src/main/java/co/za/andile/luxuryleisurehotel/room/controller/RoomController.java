@@ -62,7 +62,50 @@ public class RoomController extends HttpServlet {
         processRequest(request, response);
         switch(request.getParameter("submit")){
             case "createRoom": 
-                // checking if check box is checked
+               handleRoomCreation(request, response);
+                
+                break;
+            case "removeRoom":
+                handleRoomRemoval(request, response);
+                break;
+        }
+    }
+
+    private void handleAddRoomPage(HttpServletRequest request, HttpServletResponse response){
+         List<RoomType> roomtypes = roomTypeService.getRoomTypes();
+                HttpSession session = request.getSession(false);
+                session.setAttribute("RoomTypes", roomtypes);
+            String roomId = request.getParameter("roomId");
+            Room room = null;
+            if(roomId != null)
+                room = roomService.getRoomById(Integer.parseInt(roomId));
+                
+        request.setAttribute("roomToEdit", room);
+        try {
+            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void handleGetRoomType(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession(false);
+        List<RoomType> roomtypes = roomTypeService.getRoomTypes();
+                session = request.getSession(false);
+                session.setAttribute("RoomTypes", roomtypes);
+        try {
+            request.getRequestDispatcher("roomTypes.jsp").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void handleRoomCreation(HttpServletRequest request, HttpServletResponse response){
+         // checking if check box is checked
                 boolean isAvailable = request.getParameter("available") != null;
                 RoomType roomtype = roomTypeService.getRoomType(Integer.parseInt(request.getParameter("roomType")));  // getting the room type
                 String message;
@@ -81,31 +124,14 @@ public class RoomController extends HttpServlet {
                 }
                 
                 request.setAttribute("AddRoomMessage", message);
-                request.getRequestDispatcher("addRoom.jsp").forward(request,response);
-                
-                break;
-                
-        }
-    }
-
-    private void handleAddRoomPage(HttpServletRequest request, HttpServletResponse response){
-         List<RoomType> roomtypes = roomTypeService.getRoomTypes();
-                HttpSession session = request.getSession(false);
-                session.setAttribute("RoomTypes", roomtypes);
-        Room room = roomService.getRoomById(Integer.parseInt(request.getParameter("roomId")));
-                
-        request.setAttribute("roomToedit", room);
         try {
-            request.getRequestDispatcher("addRoom.jsp").forward(request, response);
+            request.getRequestDispatcher("addRoom.jsp").forward(request,response);
         } catch (ServletException ex) {
             Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void handleGetRoomType()
-
     /**
      * Returns a short description of the servlet.
      *
@@ -116,4 +142,20 @@ public class RoomController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void handleRoomRemoval(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession(false);
+        if(roomService.removeRoom(Integer.parseInt(request.getParameter("roomId")))){
+            request.setAttribute("removeRoomMessage", "successfully deleted the room");
+            session.setAttribute("Allrooms", roomService.getAllRooms());
+        }else 
+            request.setAttribute("removeRoomMessage", "failed to remove a room");
+        
+        try {
+            request.getRequestDispatcher("adminDashboard.jsp").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RoomController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

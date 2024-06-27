@@ -12,18 +12,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Payment</title>
-        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/payment.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/signup.css">
     </head>
     <body>
         <jsp:include page="navbar.jsp" />
-        <div class="container">
+        <section id="container" class="container">
             <% 
             User user = (User) request.getSession(false).getAttribute("user");
             Reservation reservation = (Reservation) request.getSession(false).getAttribute("reservation");
             Double amount = (Double) request.getSession(false).getAttribute("total_amount");
             if(user != null){
                 %>
-                <div class="reservation-summary">
+                <div class="form-container sign-up-container">
                     <h3>Reservation Summary</h3>
                     <div>
                         <h5>Reserving for <%= reservation.getCheck_in()%> - <%= reservation.getCheck_out()%></h5>
@@ -39,21 +39,22 @@
                         <p>including VAT    ZAR <%= amount  %></p>
                     </div>
                 </div>
-                <div class="payment">
+                <div class="overlay-container">
                     <h3>Payment</h3>
                     <div>
                         <form action="PaymentController" method="post">
                             Account holder: <input name="accHolder" type="text"></br>
-                            <div>
+                            <div class="infield">
                                 <label>Account number</label>
                                 <input name="accNumber" type="number">
                             </div>
                             <div>
-                                <label>CVV</label>
+                                <label class="infield">CVV</label>
                                 <input name="cvv" type="number">
                             </div></br>
-                            <label>Valid thru</label>
-                            <input name="validthru" type="date"></br>
+                            <div class="infield"><label>Valid thru</label>
+                                <input name="validthru" type="date">
+                            </div
                             <input name="amount" value="<%= amount%>" type="hidden">
                             <input name="reservationId" value="<%= reservation.getBookingId() %>" type="hidden"> 
                             <input name="submit" value="pay now" type="submit">
@@ -61,7 +62,7 @@
                     </div>
                 </div>
                         <%} else {%> <jsp:include page="unauthorized.jsp" /><%}%>
-        </div>
+        </section>
         
        
         

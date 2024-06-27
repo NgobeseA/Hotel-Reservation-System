@@ -47,7 +47,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public boolean createUser(User user, String password) {
-        String token = new EmailServiceImpl().generateEmailToken(user.getEmail());
+        //String token = new EmailServiceImpl().generateEmailToken(user.getEmail());
+        String token = "hdah";
         String hashedPassword = new UserEncryptServiceImpl().hashingPassword(password);
         return adminDao.addUser(user, token, hashedPassword);
     }

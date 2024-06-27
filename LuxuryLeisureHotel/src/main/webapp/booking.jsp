@@ -69,19 +69,22 @@
                     
                 
                     </div>
+                    <hr>
                     <% 
                         List<RoomType> rooms = (List<RoomType>) request.getSession(false).getAttribute("roomtypes");
                         if(rooms != null && !rooms.isEmpty()) {
-                            for(RoomType room : rooms){
                     %> 
-                    <div class="room-box">
-                        <img src="./images/<%= room.getPicture_url() %>" alt="Room Picture">
-                        <h4>Room Type: <%= room.getRoom_type() %></h4>
-                         <input type="radio" name="roomtypeId" value="<%= room.getId() %>"> Select
+                    <div class="content">
+                        <% for(RoomType room : rooms){ %>
+                        <div class="room-box">
+                            <img src="./images/<%= room.getPicture_url() %>" alt="Room Picture">
+                            <h4>Room Type: <%= room.getRoom_type() %></h4>
+                             <input type="radio" name="roomtypeId" value="<%= room.getId() %>"> Select
+                        </div>
+                    
+                    <% }%>
                     </div>
-                    <% 
-                            }
-                        } else { 
+                        <%} else { 
                     %>
                     <h3>No rooms are available at the moment</h3>
                     <% } %>

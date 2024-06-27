@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Room Types</title>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/roomType.css">
     </head>
     <body>
@@ -27,11 +27,11 @@
                 <div class="row">
                     <div class="img-pic">
                         
-                        <img src="./images/<%= rt.getPicture_url() %>" width="335" height="471">
+                        <img src="<%= request.getContextPath() %>/images/<%= rt.getPicture_url() %>" >
                     </div>
                     <div class="right">
                     <h4><%=rt.getRoom_type() %></h4>
-                    
+                    <p><%=rt.getPrice_per_night()%></p>
                     </div>
                 </div>
                     <%}%>

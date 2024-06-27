@@ -10,6 +10,7 @@ import co.za.andile.luxuryleisurehotel.payments.model.Payment;
 import co.za.andile.luxuryleisurehotel.reservations.dao.ReservationDao;
 import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.reservations.model.Status;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -45,13 +46,16 @@ public class PaymentServiceImpl implements PaymentService{
         String meal = reservation.getMeal_type();
         
         System.out.println(meal);
-        if("both".equalsIgnoreCase(meal))
-            amount += 500;
-        else if("breakfast".equalsIgnoreCase(meal))
-            amount += breakfast;
-        else if("lunch".equalsIgnoreCase(meal))
-            amount += lunch;
-        
+        long nights = ChronoUnit.DAYS.between(reservation.getCheck_in().toLocalDate(), reservation.getCheck_out().toLocalDate());
+        amount *= nights;
+        System.out.println("nights stay: "+ nights);
+        if("both".equalsIgnoreCase(meal)){
+            amount += 300.00;
+        } else if("breakfast".equalsIgnoreCase(meal))
+            amount += 124.95;
+        else if("lunch".equalsIgnoreCase(meal)){
+            amount += 205.97;
+        }
         return amount;
     }
 

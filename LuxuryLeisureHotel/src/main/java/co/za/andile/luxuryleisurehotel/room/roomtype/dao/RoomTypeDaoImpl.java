@@ -30,7 +30,7 @@ public class RoomTypeDaoImpl implements RoomTypeDao{
     public List<RoomType> getRoomTypes() {
         List<RoomType> roomtypes = new ArrayList<>();
         if(connection != null){
-            String sql = "SELECT roomtype_id, type, picture_url FROM roomtypes";
+            String sql = "SELECT roomtype_id, type, picture_url, price_per_night FROM roomtypes";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 
                 try(ResultSet resultSet = preparedStatement.executeQuery()){
@@ -39,7 +39,7 @@ public class RoomTypeDaoImpl implements RoomTypeDao{
                         rt.setId(resultSet.getInt("roomtype_id"));
                         rt.setRoom_type(resultSet.getString("type"));
                         rt.setPicture_url(resultSet.getString("picture_url"));
-                        
+                        rt.setPicture_url(resultSet.getString("price_per_night"));
                         roomtypes.add(rt);
                     }
                 }
@@ -53,10 +53,11 @@ public class RoomTypeDaoImpl implements RoomTypeDao{
     @Override
     public boolean addRoomType(RoomType roomType) {
         if(connection != null){
-            String sql = "INSERT INTO roomtypes(type, picture_url) VALUES(?, ?)";
+            String sql = "INSERT INTO roomtypes(type, picture_url, price_per_night) VALUES(?, ?, ?)";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setString(1,roomType.getRoom_type());
                 preparedStatement.setString(2,roomType.getPicture_url());
+                preparedStatement.setDouble(3, roomType.getPrice_per_night());
                 
                 if(preparedStatement.executeUpdate() > 0) return true;
             } catch (SQLException ex) {
