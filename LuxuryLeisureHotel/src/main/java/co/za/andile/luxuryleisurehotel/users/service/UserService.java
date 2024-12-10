@@ -5,14 +5,19 @@
  */
 package co.za.andile.luxuryleisurehotel.users.service;
 
+import co.za.andile.luxuryleisurehotel.exceptions.DuplicateUserException;
+import co.za.andile.luxuryleisurehotel.exceptions.InvalidDataException;
+import co.za.andile.luxuryleisurehotel.reservations.model.Reservation;
 import co.za.andile.luxuryleisurehotel.users.model.User;
+import java.util.List;
 
 /**
  *
  * @author T440
  */
 public interface UserService {
-    boolean createUser(String name, String surname, String email, String contact, String address, String password, boolean admin, boolean verified);
+    boolean createUser(String name, String surname, String email, String contact, String password, boolean admin)throws DuplicateUserException, InvalidDataException;
     User login(String email, String password);
     String tokenVerification(String token);
+    boolean updateUserProfile(User user);
 }

@@ -1,0 +1,120 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20 Jun 2024, 08:37:16
+    Author     : T440
+*/
+
+*{
+    font-family: Calibri, Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+header{
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 200px;
+    transition: 0.5s ease;
+    box-shadow: 0px 2px 5px 2px rgba(65, 64, 64, 0.281);
+    
+}
+
+header .brand{
+    color: black;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+header .brand:hover{
+    color: #122293;
+    
+}
+
+.navbar{
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 15px;
+    
+}
+
+.navbar-list{
+    display: flex;
+    font-family: Calibri, Arial, sans-serif;
+}
+
+.navbar-list li{
+    list-style-type: none;
+    font-family: Calibri, Arial, sans-serif;
+}
+
+header .navbar-list li a{
+    color: black;
+    position: relative;
+    font-size: 1em;
+    font-weight: 500;
+    text-decoration: none;
+    margin-left: 30px;
+    transition: 0.3s ease;
+    font-family: Calibri, Arial, sans-serif;
+    margin-bottom: 3px;
+}
+
+.navbar-list li a:before{
+    content: '';
+    position: absolute;
+    width: 0;
+    
+    height: 3px;
+    bottom: 0;
+    left: 0;
+    transition: 0.3s ease;
+}
+
+.navbar-list li a:hover:before{
+    width: 100%;
+    background: #243855;
+}
+.navbar-list li a:hover{
+    color: #243855;
+}
+
+ .user-circle {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-color: #243855; /* Customize the color */
+    border-radius: 50%;
+    margin-left: 10px; /* Adjust spacing */
+    text-align: center;
+    line-height: 50px;
+    color: #fff; /* Text color */
+}
+
+ .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+   /* background-color: #f1f1f1;*/
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

@@ -1,0 +1,160 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21 Jun 2024, 23:57:43
+    Author     : T440
+*/
+
+:root{
+    --linear-grad: linear-gradient(to right, #141E30, #1243855);
+    --grad-clrl: #141E30;
+    --grad-clr2: #243855;
+}
+
+section{
+    display: grid;
+    margin-top: 150px;
+    font-family: Calibri, Arial, sans-serif;
+}
+
+.container{
+    position: relative;
+    width: 950px;
+    height: 700px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 13px;
+    overflow: hidden;
+}
+
+.form-container{
+    position: absolute;
+    width: 60%;
+    height: 100%;
+    padding: 0px 10px;
+}
+
+form{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 5px;
+}
+
+.infield{
+    position: relative;
+    margin: 8px 0px;
+    width: 100%;
+}
+
+input{
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #f3f3f3;
+    border: none;
+    outline: none;
+}
+
+label{
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    width: 0%;
+    height: 2px;
+    background: var(--linear-grad);
+    transition: 0.3s;
+}
+
+input:focus ~ label{
+    width: 100%;
+}
+
+a{
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0px;
+}
+
+a.forgot {
+    padding-bottom: 3px;
+    border-bottom: 2px solid #eee;
+}
+
+button{
+    border-radius: 20px;
+    border: 1px solid var(--grad-clrl);
+    background: var(--grad-clr2);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.form-container button{
+    margin-top: 17px;
+    transition: 80ms ease-in;
+}
+
+.form-container button:hover{
+    background: #fff;
+    color: var(--grd-clrl);
+}
+
+.overlay-container{
+    position: absolute;
+    top: 0;
+    left: 60%;
+    width: 40%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay{
+    position: relative;
+    background: var(--linear-grad);
+    color: var(--grd-clr2);
+ 
+    height: 100%;
+    width: 250%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.overlay-panel{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0px 40px;
+    text-align: center;
+    height: 100%;
+    width: 340px;
+    transition: 0.6s ease-in-out;
+}
+
+.overlay-left{
+    right: 60%;
+    transform: translateX(-12%);
+}
+
+.overlay-panel h3{
+    color: var(--grd-clrl);
+}
+
+p{
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    margin: 25px 0px 35px;
+}

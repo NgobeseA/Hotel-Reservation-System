@@ -1,0 +1,49 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22 Jun 2024, 16:05:13
+    Author     : T440
+*/
+.container{
+    margin: 100px;
+    padding-top: 30px;
+}
+
+.row {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    margin: 20px;
+    background-color: #f1f1f1;
+    height: 300px;
+}
+
+.img-pic {
+
+    max-width: 500px;
+    
+    height: 100%;
+}
+
+.img-pic img {
+    max-width: 100%;
+    height: 100%;
+    /* Add other styles for the image itself */
+}
+
+.right {
+    flex: 2;
+    /* Add styles for the right container (room type text) */
+}
+
+.right h4 {
+    font-size: 18px;
+    font-weight: bold;
+    /* Add other styles for the room type text */
+}
+    
+    
